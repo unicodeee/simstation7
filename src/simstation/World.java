@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class World extends Model {
-    private static final int SIZE = 500;
+    protected static final int SIZE = 500;
     private int clock = 0;
     private int alive = 0;
     private List<Agent> agents = new ArrayList<>();
