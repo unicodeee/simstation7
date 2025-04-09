@@ -2,8 +2,8 @@ package simstation;
 public class MobileAgent extends Agent {
     private Heading heading;
 
-    public MobileAgent(World world, String name, int x, int y) {
-        super(world, name, x, y);
+    public MobileAgent() {
+        super();
         // Initialize with a random heading
         heading = Heading.random();
     }

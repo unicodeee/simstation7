@@ -62,7 +62,8 @@ public class WorldPanel extends AppPanel {
     public void setModel(Model m) {
         super.setModel(m);
         World w = (World)m;
-        Iterator<Agent> it = w.iterator();
+//        Iterator<Agent> it = w.getAgents().iterator();
+        Iterator<Agent> it = (Iterator<Agent>) w.getAgents();
         while(it.hasNext()) {
             Thread t = new Thread(it.next());
             t.start();

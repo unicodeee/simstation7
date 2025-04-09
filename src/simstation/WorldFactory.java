@@ -1,5 +1,6 @@
 package simstation;
 
+import mineField.MoveCommand;
 import mvc.AppFactory;
 import mvc.Command;
 import mvc.Model;
@@ -28,16 +29,20 @@ public class WorldFactory implements AppFactory {
 
     @Override
     public Model makeModel() {
-        return null;
+        return new World();
     }
 
     @Override
     public View makeView(Model m) {
-        return null;
+        return new WorldView((World) m);
     }
 
     @Override
     public Command makeEditCommand(Model model, String type, Object source) {
+
+        if (type == "Start") {
+            return new StartCommand(model);
+        }
         return null;
     }
 }

@@ -1,6 +1,7 @@
 package simstation;
 
 import mvc.Model;
+import mvc.ObserverAgent;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -9,6 +10,7 @@ public class World extends Model {
     protected static final int SIZE = 500;
     private int clock = 0;
     private int alive = 0;
+    private boolean observerAgentAdded = false;
     private List<Agent> agents = new ArrayList<>();
 
     /**
@@ -20,13 +22,26 @@ public class World extends Model {
         alive++;
     }
 
+    public List<Agent> getAgents() {
+        return agents;
+    }
+
     /**
      * Starts all agents in the world
      */
     public void startAgents() {
+        if (!observerAgentAdded) {
+            ObserverAgent obs = new ObserverAgent(this);
+            obs.setAgentName("handsome");
+            addAgent(obs);
+            observerAgentAdded = true;
+            obs.start();
+        }
+        populate();
         for (Agent agent : agents) {
             agent.start();
         }
+        changed();
     }
 
     /**
@@ -80,6 +95,8 @@ public class World extends Model {
         // This might include recounting alive agents, etc.
         alive = agents.size(); // Simple implementation
         clock++;
+
+        changed();
     }
 
     /**
