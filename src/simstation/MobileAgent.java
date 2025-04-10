@@ -1,7 +1,5 @@
 package simstation;
 
-import mvc.*;
-
 public class MobileAgent extends Agent {
     private Heading heading;
 

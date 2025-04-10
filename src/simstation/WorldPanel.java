@@ -1,9 +1,11 @@
 package simstation;
 
-import mvc.*;
+import mvc.AppPanel;
+import mvc.Model;
+
 import javax.swing.*;
 import java.awt.*;
-import java.util.*;
+import java.util.Iterator;
 
 public class WorldPanel extends AppPanel {
 

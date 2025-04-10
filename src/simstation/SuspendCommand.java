@@ -1,6 +1,7 @@
 package simstation;
 
-import mvc.*;
+import mvc.Command;
+import mvc.Model;
 
 public class SuspendCommand extends Command {
     public SuspendCommand(Model model) {

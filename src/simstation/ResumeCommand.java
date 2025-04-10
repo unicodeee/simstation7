@@ -1,6 +1,7 @@
 package simstation;
 
-import mvc.*;
+import mvc.Command;
+import mvc.Model;
 
 public class ResumeCommand extends Command {
     public ResumeCommand(Model model) {

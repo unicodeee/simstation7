@@ -10,8 +10,8 @@ import java.util.List;
 // AppPanel is the MVC controller
 public class AppPanel extends JPanel implements Subscriber, ActionListener  {
 
-    protected mvc.Model model;
-    protected mvc.AppFactory factory;
+    protected Model model;
+    protected AppFactory factory;
     protected View view;
     protected JPanel controlPanel;
     protected JFrame frame;
@@ -46,7 +46,7 @@ public class AppPanel extends JPanel implements Subscriber, ActionListener  {
 
     public void update() {  /* override in extensions if needed */ }
 
-    public mvc.Model getModel() { return model; }
+    public Model getModel() { return model; }
 
     // testing this out as a utility
     private void add(JComponent control, JPanel controlPanel) {
@@ -57,7 +57,7 @@ public class AppPanel extends JPanel implements Subscriber, ActionListener  {
     }
 
     // called by file/open and file/new
-    public void setModel(mvc.Model newModel) {
+    public void setModel(Model newModel) {
         this.model.unsubscribe(this);
         this.model = newModel;
         this.model.subscribe(this);
@@ -70,15 +70,15 @@ public class AppPanel extends JPanel implements Subscriber, ActionListener  {
         JMenuBar result = new JMenuBar();
         // add file, edit, and help menus
         JMenu fileMenu =
-                mvc.Utilities.makeMenu("File", new String[] {"New",  "Save", "SaveAs", "Open", "Quit"}, this);
+                Utilities.makeMenu("File", new String[] {"New",  "Save", "SaveAs", "Open", "Quit"}, this);
         result.add(fileMenu);
 
         JMenu editMenu =
-                mvc.Utilities.makeMenu("Edit", factory.getEditCommands(), this);
+                Utilities.makeMenu("Edit", factory.getEditCommands(), this);
         result.add(editMenu);
 
         JMenu helpMenu =
-                mvc.Utilities.makeMenu("Help", new String[] {"About", "Help", "History"}, this);
+                Utilities.makeMenu("Help", new String[] {"About", "Help", "History"}, this);
         result.add(helpMenu);
 
         return result;
@@ -90,26 +90,26 @@ public class AppPanel extends JPanel implements Subscriber, ActionListener  {
             history.add(cmmd);
 
             if (cmmd.equals("Save")) {
-                mvc.Utilities.save(model, false);
+                Utilities.save(model, false);
             } else if (cmmd.equals("SaveAs")) {
-                mvc.Utilities.save(model, true);
+                Utilities.save(model, true);
             } else if (cmmd.equals("Open")) {
-                Model newModel = mvc.Utilities.open(model);
+                Model newModel = Utilities.open(model);
                 if (newModel != null) setModel(newModel);
             } else if (cmmd.equals("New")) {
-                mvc.Utilities.saveChanges(model);
+                Utilities.saveChanges(model);
                 setModel(factory.makeModel());
                 // needed cuz setModel sets to true:
                 model.setUnsavedChanges(false);
             } else if (cmmd.equals("Quit")) {
-                mvc.Utilities.saveChanges(model);
+                Utilities.saveChanges(model);
                 System.exit(0);
             } else if (cmmd.equals("About")) {
-                mvc.Utilities.inform(factory.about());
+                Utilities.inform(factory.about());
             } else if (cmmd.equals("Help")) {
-                mvc.Utilities.inform(factory.getHelp());
+                Utilities.inform(factory.getHelp());
             } else if (cmmd.equals("History")) {
-                mvc.Utilities.inform(history.toArray(new String[history.size()]));
+                Utilities.inform(history.toArray(new String[history.size()]));
             } else { // must be from Edit menu
                 Command command = factory.makeEditCommand(model, cmmd, ae.getSource());
                 command.execute();

@@ -1,7 +1,6 @@
 package simstation;
 
 import java.io.Serializable;
-import mvc.*;
 
 
 public class Agent implements Runnable, Serializable {

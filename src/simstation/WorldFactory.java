@@ -1,6 +1,9 @@
 package simstation;
 
-import mvc.*;
+import mvc.AppFactory;
+import mvc.Command;
+import mvc.Model;
+import mvc.View;
 
 
 public class WorldFactory implements AppFactory {

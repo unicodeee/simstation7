@@ -1,6 +1,7 @@
 package simstation;
 
-import mvc.*;
+import mvc.Model;
+import mvc.ObserverAgent;
 
 import java.util.ArrayList;
 import java.util.List;
