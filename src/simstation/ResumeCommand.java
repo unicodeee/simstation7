@@ -1,13 +1,14 @@
 package simstation;
 
-import mvc.Command;
-import mvc.Model;
+import mvc.*;
 
 public class ResumeCommand extends Command {
-    public ResumeCommand(Model model, Heading heading) {
+    public ResumeCommand(Model model) {
         super(model);
     }
 
     public void execute() {
+        World w = (World) model;
+        w.resumeAgents();
     }
 }

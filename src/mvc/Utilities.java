@@ -1,9 +1,9 @@
 package mvc;
 
+import javax.swing.*;
 import java.awt.event.ActionListener;
 import java.io.*;
 import java.util.Random;
-import javax.swing.*;
 
 public class Utilities {
 
@@ -52,10 +52,8 @@ public class Utilities {
 
     // asks user to save changes
     public static void saveChanges(Model model) {
-        if (model.getUnsavedChanges() &&
-                !Utilities.confirm("current model has unsaved changes, continue?")) {
+        if (model.getUnsavedChanges() && Utilities.confirm("current model has unsaved changes, continue?"))
             Utilities.save(model, false);
-        }
     }
 
     // asks user for a file name

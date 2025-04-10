@@ -9,6 +9,7 @@ public class WorldPanel extends AppPanel {
 
     public JPanel threadPanel = new JPanel();
 
+
     public WorldPanel(WorldFactory factory) {
         super(factory);
 
@@ -57,16 +58,24 @@ public class WorldPanel extends AppPanel {
         p.add(threadPanel);
 
         controlPanel.add(p,  BorderLayout.NORTH);
+        controlPanel.setBackground(Color.PINK);
     }
 
     public void setModel(Model m) {
         super.setModel(m);
         World w = (World)m;
-        Iterator<Agent> it = w.iterator();
+//        Iterator<Agent> it = w.getAgents().iterator();
+        Iterator<Agent> it = (Iterator<Agent>) w.getAgents();
         while(it.hasNext()) {
             Thread t = new Thread(it.next());
             t.start();
         }
+    }
+
+    public static void main(String[] args) {
+        WorldFactory factory = new WorldFactory();
+        WorldPanel panel = new WorldPanel(factory);
+        panel.display();
     }
 
 

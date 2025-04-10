@@ -1,9 +1,7 @@
 package simstation;
 
-import mvc.AppFactory;
-import mvc.Command;
-import mvc.Model;
-import mvc.View;
+import mvc.*;
+
 
 public class WorldFactory implements AppFactory {
     @Override
@@ -17,8 +15,14 @@ public class WorldFactory implements AppFactory {
     }
 
     @Override
-    public String getHelp() {
-        return "";
+    public String[] getHelp() {
+        return new String[]{
+                    "Start --> Creates a new world",
+                    "Stop --> Stops the current world",
+                    "Pause --> Pauses all agents in current world",
+                    "Resume --> Resumes all agents in current world",
+                    "Stats --> Shows the # of agents, # of agents living, and time in seconds"
+        };
     }
 
     @Override
@@ -28,16 +32,32 @@ public class WorldFactory implements AppFactory {
 
     @Override
     public Model makeModel() {
-        return null;
+        return new World();
     }
 
     @Override
     public View makeView(Model m) {
-        return null;
+        return new WorldView((World) m);
     }
 
     @Override
     public Command makeEditCommand(Model model, String type, Object source) {
+
+        if (type == "Start") {
+            return new StartCommand(model);
+        }
+        else if(type == "Pause") {
+            return new SuspendCommand(model);
+        }
+        else if(type == "Resume") {
+            return new ResumeCommand(model);
+        }
+        else if(type == "Stop") {
+            return new StopCommand(model);
+        }
+        else if(type == "Stats") {
+            return new StatsCommand(model);
+        }
         return null;
     }
 }

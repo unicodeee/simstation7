@@ -1,13 +1,14 @@
 package simstation;
 
-import mvc.Command;
-import mvc.Model;
+import mvc.*;
 
 public class StopCommand extends Command {
-    public StopCommand(Model model, Heading heading) {
+    public StopCommand(Model model) {
         super(model);
     }
 
     public void execute() {
+        World w = (World) model;
+        w.stopAgents();
     }
 }

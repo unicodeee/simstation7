@@ -1,13 +1,14 @@
 package simstation;
 
-import mvc.Command;
-import mvc.Model;
+import mvc.*;
 
 public class SuspendCommand extends Command {
-    public SuspendCommand(Model model, Heading heading) {
+    public SuspendCommand(Model model) {
         super(model);
     }
 
     public void execute() {
+        World w = (World) model;
+        w.pauseAgents();
     }
 }

@@ -1,6 +1,6 @@
 package simstation;
 
-import mvc.Model;
+import mvc.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -9,6 +9,7 @@ public class World extends Model {
     protected static final int SIZE = 500;
     private int clock = 0;
     private int alive = 0;
+    private boolean observerAgentAdded = false;
     private List<Agent> agents = new ArrayList<>();
 
     /**
@@ -20,13 +21,26 @@ public class World extends Model {
         alive++;
     }
 
+    public List<Agent> getAgents() {
+        return agents;
+    }
+
     /**
      * Starts all agents in the world
      */
     public void startAgents() {
+        if (!observerAgentAdded) {
+            ObserverAgent obs = new ObserverAgent(this);
+            obs.setAgentName("handsome");
+            addAgent(obs);
+            observerAgentAdded = true;
+            obs.start();
+        }
+        populate();
         for (Agent agent : agents) {
             agent.start();
         }
+        changed();
     }
 
     /**
@@ -36,6 +50,7 @@ public class World extends Model {
         for (Agent agent : agents) {
             agent.stop();
         }
+        changed();
     }
 
     /**
@@ -54,6 +69,7 @@ public class World extends Model {
         for (Agent agent : agents) {
             agent.resume();
         }
+        changed();
     }
 
     /**
@@ -62,6 +78,7 @@ public class World extends Model {
     public void populate() {
         // Implementation would depend on specific requirements
         // for how agents should be created and placed
+
     }
 
     /**
@@ -69,7 +86,11 @@ public class World extends Model {
      * @return A string representing the current world status
      */
     public String getStatus() {
-        return "Clock: " + clock + ", Alive: " + alive;
+        int count = 0;
+        for (Agent agent : agents) {
+            count++;
+        }
+        return "#agents: " + count + "\n#alive: " + alive + "\n#clock: " + clock;
     }
 
     /**
@@ -80,6 +101,8 @@ public class World extends Model {
         // This might include recounting alive agents, etc.
         alive = agents.size(); // Simple implementation
         clock++;
+
+        changed();
     }
 
     /**

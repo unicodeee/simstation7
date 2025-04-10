@@ -1,6 +1,8 @@
 package simstation;
 
 import java.io.Serializable;
+import mvc.*;
+
 
 public class Agent implements Runnable, Serializable {
     private int xc;
@@ -10,13 +12,6 @@ public class Agent implements Runnable, Serializable {
     private String agentName;
     private Thread myThread;
     protected World world;
-
-    public Agent(World world, String name, int x, int y) {
-        this.world = world;
-        this.agentName = name;
-        this.xc = x;
-        this.yc = y;
-    }
 
     /**
      * Starts the agent thread
@@ -119,5 +114,9 @@ public class Agent implements Runnable, Serializable {
 
     public String getAgentName() {
         return agentName;
+    }
+
+    public void setAgentName(String s) {
+        agentName = s;
     }
 }
