@@ -4,8 +4,6 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.ArrayList;
-import java.util.List;
 
 // AppPanel is the MVC controller
 public class AppPanel extends JPanel implements Subscriber, ActionListener  {
@@ -14,26 +12,21 @@ public class AppPanel extends JPanel implements Subscriber, ActionListener  {
     protected AppFactory factory;
     protected View view;
     protected JPanel controlPanel;
-    protected JFrame frame;
-    public static int FRAME_WIDTH = 1000;
-    public static int FRAME_HEIGHT = 600;
-
-    List<String> history = new ArrayList<String>();
-
-
+    protected Command edit;
+    private JFrame frame;
+    public static int FRAME_WIDTH = 500;
+    public static int FRAME_HEIGHT = 300;
 
     public AppPanel(AppFactory factory) {
+
+        // initialize fields here
         this.factory = factory;
+        controlPanel = new JPanel();
         model = factory.makeModel();
         view = factory.makeView(model);
-        view.setBackground((Color.GRAY));
-        controlPanel = new JPanel();
-        controlPanel.setBackground((Color.PINK));
-        setLayout(new GridLayout(1, 2));
-        add(controlPanel);
-        add(view);
-        model.subscribe(this);
-
+        this.setLayout((new GridLayout(1, 2)));
+        this.add(controlPanel);
+        this.add(view);
         frame = new SafeFrame();
         Container cp = frame.getContentPane();
         cp.add(this);
@@ -42,28 +35,25 @@ public class AppPanel extends JPanel implements Subscriber, ActionListener  {
         frame.setSize(FRAME_WIDTH, FRAME_HEIGHT);
     }
 
+    public AppPanel(AppFactory factory, int width, int height) {
+      this(factory);
+      frame.setSize(width, height);
+  }
+
     public void display() { frame.setVisible(true); }
 
     public void update() {  /* override in extensions if needed */ }
 
     public Model getModel() { return model; }
 
-    // testing this out as a utility
-    private void add(JComponent control, JPanel controlPanel) {
-        JPanel p = new JPanel();
-        p.setOpaque(false);
-        p.add(control);
-        controlPanel.add(p);
-    }
-
     // called by file/open and file/new
     public void setModel(Model newModel) {
         this.model.unsubscribe(this);
         this.model = newModel;
         this.model.subscribe(this);
-        view.setModel(this.model); // view unsubscribes to old model and subscribes to the new one
+        // view must also unsubscribe then resubscribe:
+        view.setModel(this.model);
         model.changed();
-        //alternatively: this.model.copy(model);
     }
 
     protected JMenuBar createMenuBar() {
@@ -78,7 +68,7 @@ public class AppPanel extends JPanel implements Subscriber, ActionListener  {
         result.add(editMenu);
 
         JMenu helpMenu =
-                Utilities.makeMenu("Help", new String[] {"About", "Help", "History"}, this);
+                Utilities.makeMenu("Help", new String[] {"About", "Help"}, this);
         result.add(helpMenu);
 
         return result;
@@ -87,7 +77,6 @@ public class AppPanel extends JPanel implements Subscriber, ActionListener  {
     public void actionPerformed(ActionEvent ae) {
         try {
             String cmmd = ae.getActionCommand();
-            history.add(cmmd);
 
             if (cmmd.equals("Save")) {
                 Utilities.save(model, false);
@@ -108,11 +97,10 @@ public class AppPanel extends JPanel implements Subscriber, ActionListener  {
                 Utilities.inform(factory.about());
             } else if (cmmd.equals("Help")) {
                 Utilities.inform(factory.getHelp());
-            } else if (cmmd.equals("History")) {
-                Utilities.inform(history.toArray(new String[history.size()]));
             } else { // must be from Edit menu
                 Command command = factory.makeEditCommand(model, cmmd, ae.getSource());
-                command.execute();
+                command.execute();//???
+                repaint();
             }
         } catch (Exception e) {
             handleException(e);

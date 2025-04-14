@@ -1,69 +1,70 @@
 package simstation;
 
-public class MobileAgent extends Agent {
+import mvc.Utilities;
+
+public abstract class MobileAgent extends Agent {
     private Heading heading;
 
     public MobileAgent() {
         super();
-        // Initialize with a random heading
-        heading = Heading.random();
+        // Initialize with a random heading if not specified
+        this.heading = Heading.random();
     }
 
-    /**
-     * Moves the agent in its current heading by the specified number of steps
-     * @param steps Number of steps to move
-     */
-    public void move(int steps) {
-        // Calculate new position based on heading
-        int newX = getXc();
-        int newY = getYc();
-
-        switch (heading) {
-            case NORTH:
-                newY -= steps;
-                break;
-            case EAST:
-                newX += steps;
-                break;
-            case SOUTH:
-                newY += steps;
-                break;
-            case WEST:
-                newX -= steps;
-                break;
-        }
-
-        // Ensure new position is within world bounds
-        newX = Math.max(0, Math.min(World.SIZE - 1, newX));
-        newY = Math.max(0, Math.min(World.SIZE - 1, newY));
-
-        // Update position
-        setXc(newX);
-        setYc(newY);
-    }
-
-    /**
-     * Changes the agent's heading
-     * @param dir New heading direction
-     */
-    public void turn(Heading dir) {
-        heading = dir;
-    }
-
+// Add getter and setter for heading
     public Heading getHeading() {
         return heading;
     }
 
-    @Override
-    protected void update() {
-        // Mobile agents might move randomly in their update
-        // This is a simple example of behavior
-        if (Math.random() < 0.1) {
-            // Occasionally change direction
-            turn(Heading.random());
+    public void setHeading(Heading heading) {
+        this.heading = heading;
+    }
+    public void move(int steps) {
+        switch (heading) {
+            case NORTH -> setYc(getYc() - steps);
+            case EAST -> setXc(getXc() + steps);
+            case WEST -> setXc(getXc() - steps);
+            case SOUTH -> setYc(getYc() + steps);
+        }
+        if (getXc() < 0) {
+            setXc(world.SIZE - getXc());
+        }
+        if (getXc() > world.SIZE) {
+            setXc(getXc() - world.SIZE);
+        }
+        if (getYc() < 0) {
+            setYc(world.SIZE - getYc());
+        }
+        if (getYc() > world.SIZE) {
+            setYc(getYc() - world.SIZE);
+        }
+        if (world != null) {
+        world.changed(); }
+    }
+
+    private void turn(Heading dir) {
+        this.heading = dir;
+    }
+
+    public enum Heading {
+        NORTH, EAST, SOUTH, WEST;
+
+        public static Heading parse(String heading) {
+            if (heading.equalsIgnoreCase("north")) return NORTH;
+            if (heading.equalsIgnoreCase("east")) return EAST;
+            if (heading.equalsIgnoreCase("south")) return SOUTH;
+            if (heading.equalsIgnoreCase("west")) return WEST;
+            Utilities.error("Invalid heading: " + heading);
+            return null;
         }
 
-        // Move 1-3 steps in the current direction
-        move(1 + (int)(Math.random() * 3));
+        public static Heading random() {
+            int luck = Utilities.rng.nextInt(4);
+            if (luck == 0) return NORTH;
+            if (luck == 1) return SOUTH;
+            if (luck == 2) return EAST;
+            return WEST;
+        }
+
     }
 }

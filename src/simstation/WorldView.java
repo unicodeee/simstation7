@@ -6,29 +6,30 @@ import mvc.View;
 import java.awt.*;
 
 public class WorldView extends View {
+    private World world;
+    private static int AGENT_SIZE = 10;
     public WorldView(Model model) {
         super(model);
+        world = (World) model;
+    }
+
+    @Override
+    public void update() {
+        repaint();
     }
 
     @Override
     public void paintComponent(Graphics gc) {
         super.paintComponent(gc);
-        World world = (World) model;
         for (Agent a : world.getAgents()) {
             drawAgent(a, gc);
         }
     }
 
-    @Override
-    public void update() { repaint(); }
-
-    public void drawAgent(Agent a, Graphics gc){
-        //  The default implementation simply draws a diameter
-        //  10 red filled oval at the Agent's location, but this can
-        //  easily be overridden in a subclass.
-        gc.setColor(Color.RED);
-        gc.fillOval(a.getXc(), a.getYc(), 10, 10);
-        update();
-        System.out.println("Drawing agent " + a.getAgentName());
+    public void drawAgent(Agent a, Graphics gc) {
+        if (!(a instanceof ObserverAgent)) {
+            gc.setColor(Color.RED);
+            gc.fillOval(a.getXc(), a.getYc(), AGENT_SIZE, AGENT_SIZE);
+        }
     }
 }

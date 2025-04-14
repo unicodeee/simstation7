@@ -8,9 +8,9 @@ public class StartCommand extends Command {
         super(model);
     }
 
+    @Override
     public void execute() {
-        World w = (World) model;
-        w.startAgents();
-        w.changed();
+        World world = (World) model;
+        world.startAgents();
     }
 }

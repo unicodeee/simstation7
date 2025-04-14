@@ -8,8 +8,9 @@ public class SuspendCommand extends Command {
         super(model);
     }
 
+    @Override
     public void execute() {
-        World w = (World) model;
-        w.pauseAgents();
+        World world = (World) model;
+        world.pauseAgents();
     }
 }

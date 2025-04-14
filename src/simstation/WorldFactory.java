@@ -5,32 +5,29 @@ import mvc.Command;
 import mvc.Model;
 import mvc.View;
 
-
 public class WorldFactory implements AppFactory {
     @Override
     public String getTitle() {
-        return "";
+        return "Sim Station";
     }
 
     @Override
     public String[] getEditCommands() {
-        return new String[0];
+        return new String[] {"Start", "Pause", "Resume", "Stop", "Stats"};
     }
 
     @Override
-    public String[] getHelp() {
-        return new String[]{
-                    "Start --> Creates a new world",
-                    "Stop --> Stops the current world",
-                    "Pause --> Pauses all agents in current world",
-                    "Resume --> Resumes all agents in current world",
-                    "Stats --> Shows the # of agents, # of agents living, and time in seconds"
-        };
+    public String getHelp() {
+        return "Start to start simulation\n" +
+                "Pause to pause simulation\n" +
+                "Resume to resume simulation\n" +
+                "Stop to stop simulation\n" +
+                "Stats to view statistics of simulation";
     }
 
     @Override
     public String about() {
-        return "";
+        return "Sim Station Group 11: Quy Lu, Isabelle Luu";
     }
 
     @Override
@@ -45,20 +42,19 @@ public class WorldFactory implements AppFactory {
 
     @Override
     public Command makeEditCommand(Model model, String type, Object source) {
-
         if (type == "Start") {
             return new StartCommand(model);
         }
-        else if(type == "Pause") {
+        else if (type == "Pause") {
             return new SuspendCommand(model);
         }
-        else if(type == "Resume") {
+        else if (type == "Resume") {
             return new ResumeCommand(model);
         }
-        else if(type == "Stop") {
+        else if (type == "Stop") {
             return new StopCommand(model);
         }
-        else if(type == "Stats") {
+        else if (type == "Stats") {
             return new StatsCommand(model);
         }
         return null;

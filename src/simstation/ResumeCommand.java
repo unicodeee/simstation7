@@ -8,8 +8,9 @@ public class ResumeCommand extends Command {
         super(model);
     }
 
+    @Override
     public void execute() {
-        World w = (World) model;
-        w.resumeAgents();
+        World world = (World) model;
+        world.resumeAgents();
     }
 }

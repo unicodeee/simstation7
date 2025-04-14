@@ -1,16 +1,13 @@
 package simstation;
 
-import mvc.AppPanel;
-import mvc.Model;
-
+import mvc.*;
 import javax.swing.*;
 import java.awt.*;
-import java.util.Iterator;
+import java.util.*;
 
 public class WorldPanel extends AppPanel {
 
     public JPanel threadPanel = new JPanel();
-
 
     public WorldPanel(WorldFactory factory) {
         super(factory);
@@ -66,8 +63,7 @@ public class WorldPanel extends AppPanel {
     public void setModel(Model m) {
         super.setModel(m);
         World w = (World)m;
-//        Iterator<Agent> it = w.getAgents().iterator();
-        Iterator<Agent> it = (Iterator<Agent>) w.getAgents();
+        Iterator<Agent> it = w.iterator();
         while(it.hasNext()) {
             Thread t = new Thread(it.next());
             t.start();
@@ -82,3 +78,4 @@ public class WorldPanel extends AppPanel {
 
 
 }
+

@@ -1,5 +1,6 @@
 package mvc;
 
 public interface Subscriber {
-    void update();
+    public void update();
 }
+

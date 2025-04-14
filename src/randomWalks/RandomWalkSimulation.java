@@ -1,13 +1,11 @@
-package simstation.randomWalk;
-
-import mvc.AppPanel;
-import simstation.World;
-import simstation.WorldPanel;
+package randomWalks;
+import mvc.*;
+import simstation.*;
 
 public class RandomWalkSimulation extends World {
 
     public void populate() {
-        for (int i = 0; i < 50; i++)
+        for(int i = 0; i < 50; i++)
             addAgent(new Drunk());
     }
 

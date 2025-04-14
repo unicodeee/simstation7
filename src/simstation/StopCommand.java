@@ -8,8 +8,9 @@ public class StopCommand extends Command {
         super(model);
     }
 
+    @Override
     public void execute() {
-        World w = (World) model;
-        w.stopAgents();
+        World world = (World) model;
+        world.stopAgents();
     }
 }
