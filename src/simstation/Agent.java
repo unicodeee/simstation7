@@ -57,7 +57,7 @@ public abstract class Agent implements Runnable, Serializable {
         while (!isStopped()) {
             try {
                 update();
-                Thread.sleep(20);
+                Thread.sleep(50); // TO DO: 20 original
                 checkPaused();
             } catch(InterruptedException e) {
                 onInterrupted();
