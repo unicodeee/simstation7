@@ -19,11 +19,10 @@ public class Patch extends Agent {
     }
 
 
-    public void setEnergy(int newEnergy) throws Exception {
+    public void setEnergy(int newEnergy) {
         if (0 < newEnergy && newEnergy < 100) {
             this.energy = newEnergy; // because  0 < energy < 100 required
         }
-        throw new Exception("0 < energy < 100 required, get " + String.valueOf(newEnergy));
     }
 
     public void eatMe(Cow cow, int amt) {  // amt = amount
@@ -36,6 +35,6 @@ public class Patch extends Agent {
 
     @Override
     public void update() {
-
+        this.setEnergy(energy + growBackRate);
     }
 }

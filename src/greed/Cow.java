@@ -10,10 +10,9 @@ public class Cow extends MobileAgent {
 
     }
 
-    public void setEnergy(int newEnergy) throws Exception {
+    public void setEnergy(int newEnergy) {
         if (0 < newEnergy && newEnergy < 100) {
             this.energy = newEnergy; // because  0 < energy < 100 required
         }
-        throw new Exception("0 < energy < 100 required, get " + String.valueOf(newEnergy));
     }
 }
