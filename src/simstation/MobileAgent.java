@@ -2,6 +2,7 @@ package simstation;
 
 import mvc.Utilities;
 
+
 public abstract class MobileAgent extends Agent {
     private Heading heading;
 
@@ -11,7 +12,7 @@ public abstract class MobileAgent extends Agent {
         this.heading = Heading.random();
     }
 
-// Add getter and setter for heading
+    // Add getter and setter for heading
     public Heading getHeading() {
         return heading;
     }
@@ -19,6 +20,7 @@ public abstract class MobileAgent extends Agent {
     public void setHeading(Heading heading) {
         this.heading = heading;
     }
+
     public void move(int steps) {
         switch (heading) {
             case NORTH -> setYc(getYc() - steps);
@@ -26,20 +28,22 @@ public abstract class MobileAgent extends Agent {
             case WEST -> setXc(getXc() - steps);
             case SOUTH -> setYc(getYc() + steps);
         }
+
         if (getXc() < 0) {
-            setXc(world.SIZE - getXc());
+            setXc(0);
         }
-        if (getXc() > world.SIZE) {
-            setXc(getXc() - world.SIZE);
+        if (getXc() >= world.SIZE) {
+            setXc( world.SIZE);
         }
         if (getYc() < 0) {
-            setYc(world.SIZE - getYc());
+            setYc(0);
         }
-        if (getYc() > world.SIZE) {
-            setYc(getYc() - world.SIZE);
+        if (getYc() >= world.SIZE) {
+            setYc( world.SIZE);
         }
         if (world != null) {
-        world.changed(); }
+            world.changed();
+        }
     }
 
     private void turn(Heading dir) {
@@ -65,6 +69,8 @@ public abstract class MobileAgent extends Agent {
             if (luck == 2) return EAST;
             return WEST;
         }
-
     }
 }
+
+
+
