@@ -64,4 +64,3 @@ public class StoplightShape {
         gc.setColor(oldColor);
     }
 }
-

@@ -21,13 +21,13 @@ public class Utilities {
 
     // tells user some info
     public static void inform(String info) {
-        JOptionPane.showMessageDialog(null,info);
+        JOptionPane.showMessageDialog(null, info);
     }
 
     // tells user a lot of info
     public static void inform(String[] items) {
         String helpString = "";
-        for(int i = 0; i < items.length; i++) {
+        for (int i = 0; i < items.length; i++) {
             helpString = helpString + "\n" + items[i];
         }
         inform(helpString);
@@ -51,7 +51,7 @@ public class Utilities {
     }
 
     // asks user to save changes
-    public static void saveChanges(Model model) {
+   public static void saveChanges(Model model) {
         if (model.getUnsavedChanges() && Utilities.confirm("current model has unsaved changes, continue?"))
             Utilities.save(model, false);
     }
@@ -66,20 +66,20 @@ public class Utilities {
         }
         if (open) {
             int returnVal = chooser.showOpenDialog(null);
-            if(returnVal == JFileChooser.APPROVE_OPTION) {
-                result= chooser.getSelectedFile().getPath();
+            if (returnVal == JFileChooser.APPROVE_OPTION) {
+                result = chooser.getSelectedFile().getPath();
             }
         } else {
             int returnVal = chooser.showSaveDialog(null);
-            if(returnVal == JFileChooser.APPROVE_OPTION) {
-                result= chooser.getSelectedFile().getPath();
+            if (returnVal == JFileChooser.APPROVE_OPTION) {
+                result = chooser.getSelectedFile().getPath();
             }
         }
         return result;
     }
 
-    // save model
-    public static void save(Model model, Boolean saveAs) {
+
+      public static void save(Model model, Boolean saveAs) {
         String fName = model.getFileName();
         if (fName == null || saveAs) {
             fName = getFileName(fName, false);
@@ -97,24 +97,24 @@ public class Utilities {
     }
 
     // open model
-    public static Model open(Model model) {
-        saveChanges(model);
-        String fName = getFileName(model.getFileName(), true);
-        Model newModel = null;
+    public static Model openModel(Model model) {
+        model.fileName = Utilities.getFileName((String) null, true);
         try {
-            ObjectInputStream is = new ObjectInputStream(new FileInputStream(fName));
-            newModel = (Model)is.readObject();
+            ObjectInputStream is = new ObjectInputStream(new FileInputStream(model.fileName));
+            model = (Model)is.readObject();
             is.close();
+            return model;
         } catch (Exception err) {
+            model.setUnsavedChanges(true);
             Utilities.error(err);
         }
-        return newModel;
+        return null;
     }
 
     // simple menu maker
     public static JMenu makeMenu(String name, String[] items, ActionListener handler) {
         JMenu result = new JMenu(name);
-        for(int i = 0; i < items.length; i++) {
+        for (int i = 0; i < items.length; i++) {
             JMenuItem item = new JMenuItem(items[i]);
             item.addActionListener(handler);
             result.add(item);
@@ -130,8 +130,8 @@ public class Utilities {
     }
 
     private static int nextID = 100;
+
     public static int getID() {
         return nextID++;
     }
-
 }

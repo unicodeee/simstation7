@@ -10,6 +10,5 @@ public class StartCommand extends Command {
     public void execute() {
         World w = (World) model;
         w.startAgents();
-        w.changed();
     }
 }

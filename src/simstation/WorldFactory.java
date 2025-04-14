@@ -2,6 +2,8 @@ package simstation;
 
 import mvc.*;
 
+import java.util.Objects;
+
 
 public class WorldFactory implements AppFactory {
     @Override
@@ -11,7 +13,7 @@ public class WorldFactory implements AppFactory {
 
     @Override
     public String[] getEditCommands() {
-        return new String[0];
+        return new String[]{"Start", "Pause", "Resume", "Stop", "Stats"};
     }
 
     @Override
@@ -27,7 +29,7 @@ public class WorldFactory implements AppFactory {
 
     @Override
     public String about() {
-        return "";
+        return "Simstation version 1.0. Copyright 2025 by Naina Talasu, Luis Archundia, & Jonathan Aye";
     }
 
     @Override
@@ -43,19 +45,19 @@ public class WorldFactory implements AppFactory {
     @Override
     public Command makeEditCommand(Model model, String type, Object source) {
 
-        if (type == "Start") {
+        if (Objects.equals(type, "Start")) {
             return new StartCommand(model);
         }
-        else if(type == "Pause") {
+        else if(Objects.equals(type, "Pause")) {
             return new SuspendCommand(model);
         }
-        else if(type == "Resume") {
+        else if(Objects.equals(type, "Resume")) {
             return new ResumeCommand(model);
         }
-        else if(type == "Stop") {
+        else if(Objects.equals(type, "Stop")) {
             return new StopCommand(model);
         }
-        else if(type == "Stats") {
+        else if(Objects.equals(type, "Stats")) {
             return new StatsCommand(model);
         }
         return null;

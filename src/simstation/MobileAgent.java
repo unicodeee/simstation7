@@ -42,6 +42,10 @@ public class MobileAgent extends Agent {
         // Update position
         setXc(newX);
         setYc(newY);
+
+        if(world != null) {
+            world.changed();
+        }
     }
 
     /**
@@ -67,5 +71,9 @@ public class MobileAgent extends Agent {
 
         // Move 1-3 steps in the current direction
         move(1 + (int)(Math.random() * 3));
+    }
+
+    public void setHeading(Heading heading){
+        this.heading = heading;
     }
 }

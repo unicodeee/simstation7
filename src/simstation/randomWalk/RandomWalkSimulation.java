@@ -1,6 +1,6 @@
 package simstation.randomWalk;
 
-import mvc.AppPanel;
+import mvc.*;
 import simstation.World;
 import simstation.WorldPanel;
 

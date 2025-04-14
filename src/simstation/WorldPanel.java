@@ -15,6 +15,7 @@ public class WorldPanel extends AppPanel {
 
         threadPanel.setLayout(new GridLayout(1, 5));
         threadPanel.setOpaque(false);
+        super.setFrameSize(1050, 550);
 
         JPanel p = new JPanel();
         p.setOpaque(false);
@@ -65,7 +66,7 @@ public class WorldPanel extends AppPanel {
         super.setModel(m);
         World w = (World)m;
 //        Iterator<Agent> it = w.getAgents().iterator();
-        Iterator<Agent> it = (Iterator<Agent>) w.getAgents();
+        Iterator<Agent> it = w.iterator();
         while(it.hasNext()) {
             Thread t = new Thread(it.next());
             t.start();

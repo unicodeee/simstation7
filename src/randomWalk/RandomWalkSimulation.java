@@ -1,8 +1,8 @@
 package randomWalk;
 
-import mvc.AppPanel;
 import simstation.World;
 import simstation.WorldPanel;
+import mvc.*;
 
 public class RandomWalkSimulation extends World {
 

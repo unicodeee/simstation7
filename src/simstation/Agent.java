@@ -4,13 +4,13 @@ import java.io.Serializable;
 import mvc.*;
 
 
-public class Agent implements Runnable, Serializable {
+public abstract class Agent implements Runnable, Serializable {
     private int xc;
     private int yc;
     private boolean paused = false;
     private boolean stopped = false;
     private String agentName;
-    private Thread myThread;
+    transient protected Thread myThread;
     protected World world;
 
     /**
@@ -18,7 +18,7 @@ public class Agent implements Runnable, Serializable {
      */
     public void start() {
         if (myThread == null) {
-            myThread = new Thread(this, agentName);
+            myThread = new Thread(this);
             myThread.start();
         }
     }
@@ -43,7 +43,7 @@ public class Agent implements Runnable, Serializable {
     /**
      * Resumes the agent if paused
      */
-    public void resume() {
+    public synchronized void resume() {
         paused = false;
         synchronized (this) {
             this.notify();
@@ -53,38 +53,28 @@ public class Agent implements Runnable, Serializable {
     /**
      * Updates the agent's state
      */
-    protected void update() {
-        // Default implementation does nothing
-        // Subclasses should override this
-    }
+    // Default implementation does nothing
+    // Subclasses should override this
+    protected abstract void update();
 
     /**
      * The agent's run method
      */
     @Override
     public void run() {
+        myThread = Thread.currentThread();
+        onStart();
         while (!stopped) {
             // Check if paused
-            synchronized (this) {
-                while (paused) {
-                    try {
-                        wait();
-                    } catch (InterruptedException e) {
-                        if (stopped) return;
-                    }
-                }
-            }
-
-            // Perform the agent's update
-            update();
-
-            // Sleep for a bit
             try {
-                Thread.sleep(100);
+                update();
+                Thread.sleep(10);
+                checkPaused();
             } catch (InterruptedException e) {
-                if (stopped) return;
+                onInterrupted();
             }
         }
+        onExit();
     }
 
     // Getters and setters
@@ -118,5 +108,25 @@ public class Agent implements Runnable, Serializable {
 
     public void setAgentName(String s) {
         agentName = s;
+    }
+
+    protected synchronized void onExit() {
+    }
+
+    protected synchronized void onStart() {
+    }
+
+    protected synchronized void onInterrupted() {
+    }
+
+    private synchronized void checkPaused() {
+        try {
+            while(!stopped && paused) {
+                wait();
+                paused = false;
+            }
+        } catch (InterruptedException e) {
+            Utilities.error(e.getMessage());
+        }
     }
 }

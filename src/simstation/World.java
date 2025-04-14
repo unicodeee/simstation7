@@ -1,8 +1,10 @@
 package simstation;
 
 import mvc.*;
+import mvc.ObserverAgent;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 public class World extends Model {
@@ -10,31 +12,35 @@ public class World extends Model {
     private int clock = 0;
     private int alive = 0;
     private boolean observerAgentAdded = false;
-    private List<Agent> agents = new ArrayList<>();
+    private List<Agent> agents;
+
+    public World(){
+        this.agents = new ArrayList<>();
+    }
 
     /**
      * Adds an agent to the world
      * @param a The agent to add
      */
     public void addAgent(Agent a) {
+        //Randomly positions agents to ensure canvas is randomly populated
+        if (a.getXc() == 0 && a.getYc() == 0) {
+            a.setXc(Utilities.rng.nextInt(SIZE));
+            a.setYc(Utilities.rng.nextInt(SIZE));
+        }
+
         agents.add(a);
         alive++;
-    }
-
-    public List<Agent> getAgents() {
-        return agents;
     }
 
     /**
      * Starts all agents in the world
      */
     public void startAgents() {
+        //Adds an observer agent if not already present.
         if (!observerAgentAdded) {
-            ObserverAgent obs = new ObserverAgent(this);
-            obs.setAgentName("handsome");
-            addAgent(obs);
+            addAgent(new ObserverAgent(this));
             observerAgentAdded = true;
-            obs.start();
         }
         populate();
         for (Agent agent : agents) {
@@ -60,6 +66,7 @@ public class World extends Model {
         for (Agent agent : agents) {
             agent.pause();
         }
+        changed();
     }
 
     /**
@@ -86,11 +93,13 @@ public class World extends Model {
      * @return A string representing the current world status
      */
     public String getStatus() {
-        int count = 0;
+        int agentCount = 0;
         for (Agent agent : agents) {
-            count++;
+            agentCount++;
         }
-        return "#agents: " + count + "\n#alive: " + alive + "\n#clock: " + clock;
+        return "#agents: " + agentCount + "\n" +
+                "#alive: " + alive + "\n" +
+                "#clock: " + clock;
     }
 
     /**
@@ -99,9 +108,17 @@ public class World extends Model {
     public void updateStatistics() {
         // Update relevant statistics
         // This might include recounting alive agents, etc.
-        alive = agents.size(); // Simple implementation
+//        alive = agents.size(); // Simple implementation
+//        clock++;
+//
+//        changed();
         clock++;
-
+        alive = 0;
+        for (Agent a : agents) {
+            if (!(a instanceof simstation.ObserverAgent)) {
+                alive++;
+            }
+        }
         changed();
     }
 
@@ -112,16 +129,35 @@ public class World extends Model {
      * @return The neighboring agent, or null if none found
      */
     public Agent getNeighbor(Agent caller, int radius) {
-        // Implementation would depend on how agents are positioned
-        // This is a placeholder implementation
-        for (Agent agent : agents) {
-            if (agent != caller) {
-                // Calculate distance between caller and this agent
-                // If within radius, return this agent
-                // This would require position information on agents
-                return agent; // Placeholder return
+//        // Implementation would depend on how agents are positioned
+//        // This is a placeholder implementation
+//        for (Agent agent : agents) {
+//            if (agent != caller) {
+//                // Calculate distance between caller and this agent
+//                // If within radius, return this agent
+//                // This would require position information on agents
+//                return agent; // Placeholder return
+//            }
+//        }
+//        return null;
+        List<Agent> nearby = new ArrayList<>();
+        //May require some adjusting
+        for (Agent a : agents) {
+            int dx = a.getXc() - caller.getXc();
+            int dy = a.getYc() - caller.getYc();
+            double distance = Math.sqrt(dx*dx + dy*dy);
+            if (distance <= radius) {
+                nearby.add(a);
             }
         }
-        return null;
+        return nearby.get(Utilities.rng.nextInt(nearby.size()));
+    }
+
+    public Iterator<Agent> iterator() {
+        return agents.iterator();
+    }
+
+    public synchronized List<Agent> getAgents(){
+        return agents;
     }
 }

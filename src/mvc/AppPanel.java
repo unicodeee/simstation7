@@ -4,36 +4,33 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.ArrayList;
-import java.util.List;
 
 // AppPanel is the MVC controller
-public class AppPanel extends JPanel implements Subscriber, ActionListener  {
+public class AppPanel extends JPanel implements Subscriber, ActionListener {
 
-    protected mvc.Model model;
-    protected mvc.AppFactory factory;
+    protected Model model;
+    protected AppFactory factory;
     protected View view;
     protected JPanel controlPanel;
-    protected JFrame frame;
-    public static int FRAME_WIDTH = 1000;
-    public static int FRAME_HEIGHT = 600;
-
-    List<String> history = new ArrayList<String>();
-
-
+    private JFrame frame;
+    public static int FRAME_WIDTH = 500;
+    public static int FRAME_HEIGHT = 300;
 
     public AppPanel(AppFactory factory) {
+
+        // initialize fields here
         this.factory = factory;
         model = factory.makeModel();
+        model.subscribe(this);
         view = factory.makeView(model);
-        view.setBackground((Color.GRAY));
         controlPanel = new JPanel();
-        controlPanel.setBackground((Color.PINK));
-        setLayout(new GridLayout(1, 2));
+
+        Color backgroundColor = Color.PINK;
+        controlPanel.setBackground(backgroundColor);
+
+        this.setLayout((new GridLayout(1, 2)));
         add(controlPanel);
         add(view);
-        model.subscribe(this);
-
         frame = new SafeFrame();
         Container cp = frame.getContentPane();
         cp.add(this);
@@ -44,41 +41,34 @@ public class AppPanel extends JPanel implements Subscriber, ActionListener  {
 
     public void display() { frame.setVisible(true); }
 
-    public void update() {  /* override in extensions if needed */ }
-
-    public mvc.Model getModel() { return model; }
-
-    // testing this out as a utility
-    private void add(JComponent control, JPanel controlPanel) {
-        JPanel p = new JPanel();
-        p.setOpaque(false);
-        p.add(control);
-        controlPanel.add(p);
+    public void update() {  /* override in extensions if needed */
     }
 
+    public Model getModel() { return model; }
+
     // called by file/open and file/new
-    public void setModel(mvc.Model newModel) {
+    public void setModel(Model newModel) {
         this.model.unsubscribe(this);
         this.model = newModel;
         this.model.subscribe(this);
-        view.setModel(this.model); // view unsubscribes to old model and subscribes to the new one
+        // view must also unsubscribe then resubscribe:
+        view.setModel(this.model);
         model.changed();
-        //alternatively: this.model.copy(model);
     }
 
     protected JMenuBar createMenuBar() {
         JMenuBar result = new JMenuBar();
         // add file, edit, and help menus
         JMenu fileMenu =
-                mvc.Utilities.makeMenu("File", new String[] {"New",  "Save", "SaveAs", "Open", "Quit"}, this);
+                Utilities.makeMenu("File", new String[] {"New",  "Save", "SaveAs", "Open", "Quit"}, this);
         result.add(fileMenu);
 
         JMenu editMenu =
-                mvc.Utilities.makeMenu("Edit", factory.getEditCommands(), this);
+                Utilities.makeMenu("Edit", factory.getEditCommands(), this);
         result.add(editMenu);
 
         JMenu helpMenu =
-                mvc.Utilities.makeMenu("Help", new String[] {"About", "Help", "History"}, this);
+                Utilities.makeMenu("Help", new String[] {"About", "Help"}, this);
         result.add(helpMenu);
 
         return result;
@@ -87,36 +77,46 @@ public class AppPanel extends JPanel implements Subscriber, ActionListener  {
     public void actionPerformed(ActionEvent ae) {
         try {
             String cmmd = ae.getActionCommand();
-            history.add(cmmd);
 
             if (cmmd.equals("Save")) {
-                mvc.Utilities.save(model, false);
+                Utilities.save(model, false);
             } else if (cmmd.equals("SaveAs")) {
-                mvc.Utilities.save(model, true);
+                Utilities.save(model, true);
             } else if (cmmd.equals("Open")) {
-                Model newModel = mvc.Utilities.open(model);
-                if (newModel != null) setModel(newModel);
+                if(model.getUnsavedChanges()){
+                    if(Utilities.confirm("Are you sure? Unsaved changes will be lost!")){
+                        Model newModel = Utilities.openModel(model);
+                        if (newModel != null) setModel(newModel);
+                    }
+                }
+
             } else if (cmmd.equals("New")) {
-                mvc.Utilities.saveChanges(model);
-                setModel(factory.makeModel());
-                // needed cuz setModel sets to true:
-                model.setUnsavedChanges(false);
+                if (Utilities.confirm("Are you sure? Unsaved changes will be lost!")) {
+                    setModel(factory.makeModel());
+                    model.setUnsavedChanges(false);
+                    model.fileName = null;
+                }
+                //Utilities.saveChanges(model);
+                //setModel(factory.makeModel());
+                // // needed cuz setModel sets to true:
+                //model.setUnsavedChanges(false);
             } else if (cmmd.equals("Quit")) {
-                mvc.Utilities.saveChanges(model);
+                Utilities.saveChanges(model);
                 System.exit(0);
             } else if (cmmd.equals("About")) {
-                mvc.Utilities.inform(factory.about());
+                Utilities.inform(factory.about());
             } else if (cmmd.equals("Help")) {
-                mvc.Utilities.inform(factory.getHelp());
-            } else if (cmmd.equals("History")) {
-                mvc.Utilities.inform(history.toArray(new String[history.size()]));
-            } else { // must be from Edit menu
-                Command command = factory.makeEditCommand(model, cmmd, ae.getSource());
-                command.execute();
+                Utilities.inform(factory.getHelp());
+            } else {
+                factory.makeEditCommand(model, ae.getActionCommand(), ae.getSource()).execute();
             }
         } catch (Exception e) {
             handleException(e);
         }
+    }
+
+    public void setFrameSize(int width, int height) {
+        frame.setSize(width, height);
     }
 
     protected void handleException(Exception e) {

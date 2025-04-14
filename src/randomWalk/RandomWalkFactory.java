@@ -1,7 +1,7 @@
 package randomWalk;
 
-import mvc.Model;
 import simstation.WorldFactory;
+import mvc.*;
 
 class RandomWalkFactory extends WorldFactory {
     public Model makeModel() {

@@ -1,5 +1,4 @@
 package simstation;
-
 import mvc.Utilities;
 
 public enum Heading {

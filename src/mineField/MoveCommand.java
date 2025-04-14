@@ -1,26 +1,19 @@
 package mineField;
 
-import mvc.Command;
-import mvc.Model;
-import mvc.Utilities;
+import mvc.*;
 
 public class MoveCommand extends Command {
-    Heading heading;
-    public MoveCommand(Model model, Heading heading) {
+    private MineField model;
+    private String direction;
+
+    public MoveCommand(Model model, String direction) {
         super(model);
-        this.heading = heading;
+        this.model = (MineField) model;
+        this.direction = direction;
+    }
+    public void execute ()  throws MineFieldException{
+        model.move(direction);
+        model.changed();
     }
 
-    public void execute() {
-        try {
-            MineField minefield = (MineField) model;
-            minefield.move(heading);
-        } catch (MineField.GameIsFinishedException | MineField.OutOfBoundsException | MineField.IsAMineException | MineField.DestinationReachedException e) {
-            Utilities.error(e.getMessage());
-        }
-    }
-
-    public enum Heading {
-        NORTH, NORTHWEST, NORTHEAST, WEST, EAST, SOUTH, SOUTHWEST, SOUTHEAST
-    }
 }

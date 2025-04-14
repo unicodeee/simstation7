@@ -1,6 +1,7 @@
 package stopLight;
 
 import mvc.*;
+
 import java.awt.*;
 
 public class StoplightView extends View {

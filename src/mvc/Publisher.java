@@ -1,18 +1,41 @@
 package mvc;
 
-import java.util.ArrayList;
+
+import java.util.*;
+
 
 public class Publisher {
-    private ArrayList<mvc.Subscriber> subs = new ArrayList<>();
+    protected List<Subscriber> subscribers ;
+    //default implementation is ArrayList
+    public Publisher(){
+        subscribers = new ArrayList<>();
+    }
 
-    public void subscribe(mvc.Subscriber sub) { subs.add(sub); }
-
-    public void unsubscribe(mvc.Subscriber sub) { subs.remove(sub); }
-
-    public void notifySubscribers() {
-        for(Subscriber sub : subs) {
-            sub.update();
+    //can choose what type of list of subscribers
+    public Publisher(String x){
+        if(x.equalsIgnoreCase("linked")) {
+            subscribers = new LinkedList<>();
+        } else if(x.equalsIgnoreCase("stack"))
+            subscribers = new Stack<>();
+        else if(x.equalsIgnoreCase("vector"))
+            subscribers = new Vector<>();
+        else
+            subscribers = new ArrayList<>();
+    }
+    public void subscribe(Subscriber sb){
+        subscribers.add(sb);
+    }
+    public void unsubscribe(Subscriber sb){
+        subscribers.remove(sb);
+    }
+    //calls update method of all subscribers
+    public void notifySubscribers(){
+        for(Subscriber sb: subscribers){
+            sb.update();
         }
     }
 
+    public List<Subscriber> getSubscribers() {
+        return subscribers;
+    }
 }
