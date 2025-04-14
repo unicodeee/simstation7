@@ -14,12 +14,21 @@ public class Meadow extends World {
     int dim = SIZE / patchSize; // dim is how patch many per row
 
     public void populate() {
+
+        // add patches
         for(int i = 0; i < dim; i++){
             for (int j = 0; j < dim; j++){
                 addAgent(new Patch(i, j));
 //                addAgent(new Drunk());
             }
         }
+
+        // add cows
+        for(int i = 0; i < numCows; i++){
+                addAgent(new Cow());
+        }
+
+
     }
 
     public int getDim() {

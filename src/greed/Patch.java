@@ -6,7 +6,7 @@ import simstation.MobileAgent;
 
 public class Patch extends Agent {
 
-    static public int patchSize  = 10; // TO DO: change back to 10 later
+    static public int patchSize  = 20; // TO DO: change back to 10 later
     public int energy = 5;
     public int growBackRate = 1;
 

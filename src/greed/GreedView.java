@@ -2,6 +2,7 @@ package greed;
 
 
 import simstation.Agent;
+import simstation.ObserverAgent;
 import simstation.WorldView;
 
 import java.awt.*;
@@ -13,6 +14,8 @@ public class GreedView extends WorldView {
 
     @Override
     public void drawAgent(Agent a, Graphics gc) {
+        super.drawAgent(a, gc);
+
         if ((a instanceof Patch)) {
 
             int greenNess = (255/100) * ((Patch) a).energy;   // 255/100 helps map values in 100 range to 255 range for RBG value
