@@ -1,17 +1,32 @@
 package greed;
 
 import mvc.AppPanel;
+import simstation.Agent;
 import simstation.World;
 import simstation.WorldPanel;
 
 public class Meadow extends World {
 
     int waitPenalty = 5;
-    int moveEnergy = 10;
+    int moveEnergy = 5;
     int numCows = 50;
     int patchSize = 25;
     int dim = SIZE / patchSize; // dim is how patch many per row
 
+    public Patch getPatchAt(int cowX, int cowY) {
+        for (Agent patch : getAgents()) {
+            if (patch instanceof Patch
+                    && patch.getXc() / patchSize == cowX / patchSize
+                    && patch.getYc() / patchSize == cowY / patchSize) {
+                return (Patch) patch;
+            }
+        }
+        return null;
+    }
+
+    public int getMoveEnergy() {
+        return moveEnergy;
+    }
 
     public int getPatchSize() {
         return patchSize;
@@ -30,7 +45,7 @@ public class Meadow extends World {
         }
 
         // add cows
-        for(int i = 0; i < 50; i++){
+        for(int i = 0; i < numCows; i++){
                 addAgent(new Cow());
         }
     }
