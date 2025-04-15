@@ -12,7 +12,14 @@ public abstract class Agent implements Runnable, Serializable {
     private String agentName;
     transient protected Thread myThread;
     protected World world;
-
+    static int AGENT_SIZE = 10;
+    private boolean positionSet = false;
+    public int getAgentSize() {
+        return AGENT_SIZE;
+    }
+    public boolean isPositionSet() {
+        return positionSet;
+    }
     public int getXc() {
         return xc;
     }
@@ -23,10 +30,12 @@ public abstract class Agent implements Runnable, Serializable {
 
     public void setXc(int xc) {
         this.xc = xc;
+        this.positionSet = true;
     }
 
     public void setYc(int yc) {
         this.yc = yc;
+        this.positionSet = true;
     }
 
     public void start() {
@@ -57,7 +66,7 @@ public abstract class Agent implements Runnable, Serializable {
         while (!isStopped()) {
             try {
                 update();
-                Thread.sleep(50); // TO DO: 20 original
+                Thread.sleep(20); // TO DO: 20 original
                 checkPaused();
             } catch(InterruptedException e) {
                 onInterrupted();

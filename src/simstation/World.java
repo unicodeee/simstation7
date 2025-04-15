@@ -21,7 +21,7 @@ public class World extends Model {
 
     public synchronized void addAgent(Agent a) {
         // Set random initial position if not already set
-        if (a.getXc() == 0 && a.getYc() == 0) {
+        if (!a.isPositionSet()) {
             a.setXc(Utilities.rng.nextInt(SIZE));
             a.setYc(Utilities.rng.nextInt(SIZE));
         }

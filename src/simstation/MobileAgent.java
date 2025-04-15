@@ -32,14 +32,14 @@ public abstract class MobileAgent extends Agent {
         if (getXc() < 0) {
             setXc(getXc() + world.SIZE);
         }
-        if (getXc() >= world.SIZE) {
-            setXc( 0 + world.SIZE );
+        if (getXc() > world.SIZE - getAgentSize()) {
+            setXc( 0);
         }
         if (getYc() < 0) {
             setYc(getYc() + world.SIZE);
         }
-        if (getYc() >= world.SIZE) {
-            setYc( 0 + world.SIZE);
+        if (getYc() > world.SIZE - getAgentSize()) {
+            setYc( 0);
         }
         if (world != null) {
             world.changed();

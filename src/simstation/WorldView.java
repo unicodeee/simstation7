@@ -7,7 +7,6 @@ import java.awt.*;
 
 public class WorldView extends View {
     private World world;
-    private static int AGENT_SIZE = 10;
     public WorldView(Model model) {
         super(model);
         world = (World) model;
@@ -29,7 +28,7 @@ public class WorldView extends View {
     public void drawAgent(Agent a, Graphics gc) {
         if (!(a instanceof ObserverAgent)) {
             gc.setColor(Color.RED);
-            gc.fillOval(a.getXc(), a.getYc(), AGENT_SIZE, AGENT_SIZE);
+            gc.fillOval(a.getXc(), a.getYc(),  a.getAgentSize(), a.getAgentSize());
         }
     }
 }

@@ -2,25 +2,22 @@ package greed;
 
 import mvc.Utilities;
 import simstation.Agent;
-import simstation.MobileAgent;
 
 public class Patch extends Agent {
 
-    static public int patchSize  = 20; // TO DO: change back to 10 later
+    static public int patchSize  = 50; // TO DO: change back to 10 later
     public int energy = 5;
     public int growBackRate = 1;
 
 //    final Point position;
 
-    public Patch(int x, int y) {
+    public Patch() {
         super();
-        setXc(x * patchSize);
-        setYc(y * patchSize);
     }
 
 
     public void setEnergy(int newEnergy) {
-        if (0 < newEnergy && newEnergy < 100) {
+        if (0 <= newEnergy && newEnergy <= 100) {
             this.energy = newEnergy; // because  0 < energy < 100 required
         }
     }
@@ -29,12 +26,8 @@ public class Patch extends Agent {
         // TO DO
     }
 
-
-    MobileAgent.Heading heading = MobileAgent.Heading.random();
-    int steps = Utilities.rng.nextInt(20) + 1;
-
     @Override
     public void update() {
-        this.setEnergy(energy + growBackRate);
+//        this.setEnergy(energy + growBackRate);
     }
 }
