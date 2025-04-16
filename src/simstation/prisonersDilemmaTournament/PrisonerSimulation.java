@@ -70,7 +70,7 @@ public class PrisonerSimulation extends World {
         double tit4TatAvg = tit4TatFitness / 10;
 
         return "#agents: " + agentCount + "\n"+
-                "#clock: " + clock + "\n" +
+                "#clock: " + clock + "\n" + "\n" +
                 "Averages ----------\n" +
                 "Cooperate: " + cooperateAvg + "\n" +
                 "Cheat: " + cheatAvg + "\n" +

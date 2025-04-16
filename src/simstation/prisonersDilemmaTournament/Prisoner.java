@@ -45,26 +45,29 @@ public class Prisoner extends MobileAgent{
     @Override
     public void update() {
         // Picks a random neighbor to interact with
-        Prisoner partner = (Prisoner) world.getNeighbor(this, 30);
-        boolean myMove = cooperate();
-        boolean partnerMove = partner.cooperate();
+        Prisoner partner = (Prisoner) world.getNeighbor(this, 10);
 
-        // updates partnerCheated flag (from previous tournament round)
-        setPartnerCheated(!partnerCheated);
-        partner.setPartnerCheated(!myMove);
+        if (partner != null) {
+            boolean myMove = cooperate();
+            boolean partnerMove = partner.cooperate();
 
-        //Tournament logic
+            // updates partnerCheated flag (from previous tournament round)
+            setPartnerCheated(!partnerCheated);
+            partner.setPartnerCheated(!myMove);
 
-        if(myMove && partnerMove){
-            this.updateFitness(3);
-            partner.updateFitness(3);
-        }else if(!myMove && !partnerMove){
-            this.updateFitness(5);
-        }else if(myMove && !partnerMove){
-            partner.updateFitness(5);
-        }else{
-            this.updateFitness(1);
-            partner.updateFitness(1);
+            //Tournament logic
+
+            if(myMove && partnerMove){
+                this.updateFitness(3);
+                partner.updateFitness(3);
+            }else if(!myMove && !partnerMove){
+                this.updateFitness(5);
+            }else if(myMove && !partnerMove){
+                partner.updateFitness(5);
+            }else{
+                this.updateFitness(1);
+                partner.updateFitness(1);
+            }
         }
 
         setHeading(Heading.random());
