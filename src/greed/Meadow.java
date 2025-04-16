@@ -10,6 +10,8 @@ public class Meadow extends World {
     int waitPenalty = 5;
     int moveEnergy = 5;
     int numCows = 50;
+
+    int greediness = 25;
     int patchSize = 25;
     int dim = SIZE / patchSize; // dim is how patch many per row
 
@@ -52,6 +54,14 @@ public class Meadow extends World {
 
     public int getDim() {
         return dim;
+    }
+
+    public void setGreediness(int greediness) {
+        this.greediness = greediness;
+    }
+
+    public int getGreediness() {
+        return greediness;
     }
 
     public static void main(String[] args) {

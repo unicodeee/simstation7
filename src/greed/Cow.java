@@ -4,7 +4,7 @@ import simstation.MobileAgent;
 
 public class Cow extends MobileAgent {
     int energy = 100;
-    int greediness = 25;
+
 
     public boolean died = false;
     @Override
@@ -25,7 +25,7 @@ public class Cow extends MobileAgent {
 
     public void eat() {
         Patch patch = (Patch) ((Meadow)world).getPatchAt(getXc(), getYc());
-        int amountToEat = greediness;
+        int amountToEat = ((Meadow)world).getGreediness();
 
 //        System.out.println(patch.getXc() + ", " + patch.getYc());
 
