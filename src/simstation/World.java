@@ -103,7 +103,19 @@ public class World extends Model {
                 nearby.add(a);
             }
         }
-        return nearby.get(Utilities.rng.nextInt(nearby.size()));
+        int maxCount = 10;
+        int count = 0;
+
+        while (count < nearby.size() || count < maxCount) {
+            int randNum = Utilities.rng.nextInt(nearby.size());
+            Agent a = nearby.get(randNum);
+            if(a instanceof ObserverAgent) {
+                nearby.remove(a);
+            }else{
+                return nearby.get(randNum);
+            }
+        }
+        return null;
     }
 
     public synchronized List<Agent> getAgents() {
@@ -112,5 +124,13 @@ public class World extends Model {
 
     public Iterator<Agent> iterator() {
         return agents.iterator();
+    }
+
+    public int getClock() {
+        return clock;
+    }
+
+    public void setClock(int clock) {
+        this.clock = clock;
     }
 }
