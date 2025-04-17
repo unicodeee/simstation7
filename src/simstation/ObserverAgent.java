@@ -1,7 +1,7 @@
 package simstation;
 
 public class ObserverAgent extends Agent {
-    private simstation.World world;
+    private World world;
 
     public ObserverAgent(World world) {
         this.world = world;

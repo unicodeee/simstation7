@@ -1,13 +1,15 @@
 package plague;
 
 import simstation.Agent;
-import simstation.*;
+import simstation.ObserverAgent;
+import simstation.World;
+import simstation.WorldView;
 
 import java.awt.*;
 
 public class PlagueView extends WorldView {
 
-    private simstation.World world;
+    private World world;
 
     public PlagueView(PlagueSimulation model) {
         super(model);
@@ -20,7 +22,7 @@ public class PlagueView extends WorldView {
     @Override
     public void paintComponent(Graphics gc) {
         super.paintComponent(gc);
-        for (simstation.Agent a : world.getAgents()) {
+        for (Agent a : world.getAgents()) {
             if((!(a instanceof ObserverAgent))) {
                 if (((Host) a).isInfected() && ((Host) a).getTimeInfected() > PlagueSimulation.RECOVERY_TIME) {
                     if(((PlagueSimulation)world).isFatal())
@@ -29,7 +31,7 @@ public class PlagueView extends WorldView {
                 }
 
                 if (((Host) a).isAlive() && !((Host)a).isInfected() ) {
-                    for (simstation.Agent b : world.getAgents()) {
+                    for (Agent b : world.getAgents()) {
                         if((!(b instanceof ObserverAgent))) {
                             if (Math.abs(a.getXc() - b.getXc()) < 10 && Math.abs(a.getYc() - b.getYc()) < 10 && ((Host) b).isInfected()) {
                                 ((Host) a).tryToInfect();

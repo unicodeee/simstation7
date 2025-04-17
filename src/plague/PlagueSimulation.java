@@ -1,5 +1,9 @@
 package plague;
-import simstation.*;
+
+import simstation.Agent;
+import simstation.ObserverAgent;
+import simstation.World;
+
 import java.util.List;
 
 public class PlagueSimulation extends World {

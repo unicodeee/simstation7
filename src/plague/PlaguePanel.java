@@ -1,8 +1,9 @@
 package plague;
 
+import simstation.WorldPanel;
+
 import javax.swing.*;
 import java.awt.*;
-import simstation.*;
 
 public class PlaguePanel extends WorldPanel {
 
@@ -97,6 +98,10 @@ public class PlaguePanel extends WorldPanel {
         if (m instanceof PlagueSimulation sim) {
             sim.setFatal(!fatalToggle.isSelected());
         }
+    }
+
+    public static void main(String[] args) {
+        PlagueSimulation.main(args);
     }
 
 }

@@ -8,11 +8,11 @@ import java.awt.event.ActionListener;
 // AppPanel is the MVC controller
 public class AppPanel extends JPanel implements Subscriber, ActionListener  {
 
-    protected mvc.Model model;
+    protected Model model;
     protected AppFactory factory;
     protected View view;
     protected JPanel controlPanel;
-    protected mvc.Command edit;
+    protected Command edit;
     private JFrame frame;
     public static int FRAME_WIDTH = 1100;
     public static int FRAME_HEIGHT = 600;
@@ -44,10 +44,10 @@ public class AppPanel extends JPanel implements Subscriber, ActionListener  {
 
     public void update() {  /* override in extensions if needed */ }
 
-    public mvc.Model getModel() { return model; }
+    public Model getModel() { return model; }
 
     // called by file/open and file/new
-    public void setModel(mvc.Model newModel) {
+    public void setModel(Model newModel) {
         this.model.unsubscribe(this);
         this.model = newModel;
         this.model.subscribe(this);

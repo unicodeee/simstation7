@@ -11,7 +11,7 @@ public class StatsCommand extends Command {
 
     @Override
     public void execute() {
-        simstation.World world = (World) model;
+        World world = (World) model;
         String stats = world.getStatus();
         Utilities.inform(stats);
     }

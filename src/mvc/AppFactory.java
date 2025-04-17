@@ -9,9 +9,9 @@ public interface AppFactory {
 
     String about();
 
-    mvc.Model makeModel();
+    Model makeModel();
 
-    View makeView(mvc.Model m);
+    View makeView(Model m);
 
     Command makeEditCommand(Model model, String type, Object source);
 }

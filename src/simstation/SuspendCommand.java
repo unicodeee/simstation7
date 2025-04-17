@@ -10,7 +10,7 @@ public class SuspendCommand extends Command {
 
     @Override
     public void execute() {
-        simstation.World world = (World) model;
+        World world = (World) model;
         world.pauseAgents();
     }
 }

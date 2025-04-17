@@ -6,7 +6,7 @@ import mvc.View;
 import java.awt.*;
 
 public class WorldView extends View {
-    private simstation.World world;
+    private World world;
     public WorldView(Model model) {
         super(model);
         world = (World) model;
@@ -20,7 +20,7 @@ public class WorldView extends View {
     @Override
     public void paintComponent(Graphics gc) {
         super.paintComponent(gc);
-        for (simstation.Agent a : world.getAgents()) {
+        for (Agent a : world.getAgents()) {
             drawAgent(a, gc);
         }
     }

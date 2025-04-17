@@ -32,7 +32,7 @@ public class WorldFactory implements AppFactory {
 
     @Override
     public Model makeModel() {
-        return new simstation.World();
+        return new World();
     }
 
     @Override
@@ -42,16 +42,19 @@ public class WorldFactory implements AppFactory {
 
     @Override
     public Command makeEditCommand(Model model, String type, Object source) {
-        System.out.println("makeEditCommand called with: " + type);
-        if ("Start".equals(type)) {
+        if (type == "Start") {
             return new StartCommand(model);
-        } else if ("Pause".equals(type)) {
+        }
+        else if (type == "Pause") {
             return new SuspendCommand(model);
-        } else if ("Resume".equals(type)) {
+        }
+        else if (type == "Resume") {
             return new ResumeCommand(model);
-        } else if ("Stop".equals(type)) {
+        }
+        else if (type == "Stop") {
             return new StopCommand(model);
-        } else if ("Stats".equals(type)) {
+        }
+        else if (type == "Stats") {
             return new StatsCommand(model);
         }
         return null;
