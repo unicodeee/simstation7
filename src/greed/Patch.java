@@ -1,16 +1,11 @@
 package greed;
 
-import mvc.Utilities;
 import simstation.Agent;
 
 public class Patch extends Agent {
 
-    static public int patchSize  = 50; // TO DO: change back to 10 later
     public int energy = 100;
-    public int growBackRate = 1;
 
-//    final Point position;
-    public boolean beingGrazed = false;
     public Patch() {
         super();
     }
@@ -39,6 +34,6 @@ public class Patch extends Agent {
 
     @Override
     public void update() {
-        this.setEnergy(energy + growBackRate);
+        this.setEnergy(energy + ((Meadow)world).getGrowBackRate());
     }
 }

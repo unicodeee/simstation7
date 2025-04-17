@@ -1,71 +1,62 @@
 package greed;
 
-import simstation.*;
 import mvc.Model;
+import simstation.WorldPanel;
+
 import javax.swing.*;
 import java.awt.*;
 import java.util.Hashtable;
 
 public class MeadowPanel extends WorldPanel {
-    // Sliders for various simulation parameters
     private JSlider greedinessSlider;
-    private JSlider infectionProbabilitySlider;
-    private JSlider populationSizeSlider;
-    private JSlider recoveryTimeSlider;
-    private JButton fatalityButton;
+    private JLabel greedinessLabel;
 
-    // Value labels displayed above sliders
-    private JLabel initialInfectedValue;
-    private JLabel infectionProbabilityValue;
-    private JLabel populationSizeValue;
-    private JLabel recoveryTimeValue;
 
-    // Reference to the simulation
+    private JSlider growBackRateSlider;
+    private JLabel growBackRateLabel;
+
+
+    private JSlider moveEnergySlider;
+    private JLabel moveEnergyLabel;
+
+
+
     private Meadow meadow;
+    private String[] labels = {"Greed", "Grow back rate", "Move Energy"};
 
     public MeadowPanel(GreedFactory factory) {
         super(factory);
-
-        // Add the slider panels below the existing controls
+        meadow = (Meadow) model;
         addSliderPanels();
     }
 
     private void addSliderPanels() {
-        // Create a main panel to hold all the sliders
         JPanel sliderPanel = new JPanel();
         sliderPanel.setLayout(new BoxLayout(sliderPanel, BoxLayout.Y_AXIS));
         sliderPanel.setBackground(Color.PINK);
         sliderPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
 
-        // Create slider panels
-        JPanel infectedPanel = createLabeledSlider("Initial % Infected:", 0, 100, 10, 10);
-        JPanel probabilityPanel = createLabeledSlider("Infection Probability:", 0, 100, 50, 10);
-        JPanel populationPanel = createLabeledSlider("Initial Population Size:", 0, 200, 50, 20);
-        JPanel recoveryPanel = createLabeledSlider("Fatality/Recovery Time:", 0, 500, 200, 50);
 
-        // Fatality button panel
-        JPanel fatalityPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
-        fatalityPanel.setOpaque(false);
-        fatalityButton = new JButton("Not Fatal");
-        fatalityButton.setPreferredSize(new Dimension(100, 30));
-//        fatalityButton.addActionListener(e -> toggleFatality());
-        fatalityPanel.add(fatalityButton);
 
-        // Add slider panels to the main panel
-        sliderPanel.add(infectedPanel);
-        sliderPanel.add(Box.createVerticalStrut(10));
-        sliderPanel.add(probabilityPanel);
-        sliderPanel.add(Box.createVerticalStrut(10));
-        sliderPanel.add(populationPanel);
-        sliderPanel.add(Box.createVerticalStrut(10));
-        sliderPanel.add(recoveryPanel);
-        sliderPanel.add(Box.createVerticalStrut(10));
-        sliderPanel.add(fatalityPanel);
+        JPanel panel;
 
-        // Add the slider panel to the south position of the control panel
+        panel = createLabeledSlider(labels[0] + ":", 0, 100, 25, 10);
+        sliderPanel.add(panel);
+        sliderPanel.add(Box.createVerticalStrut(10));
+
+        panel = createLabeledSlider(labels[1] + ":", 0, 10, 1, 10);
+        sliderPanel.add(panel);
+        sliderPanel.add(Box.createVerticalStrut(10));
+
+        panel = createLabeledSlider(labels[2] + ":", 0, 50, 10, 10);
+        sliderPanel.add(panel);
+        sliderPanel.add(Box.createVerticalStrut(10));
+
+
+
+
+
         controlPanel.add(sliderPanel, BorderLayout.SOUTH);
-
-        // Update the control panel
         controlPanel.revalidate();
         controlPanel.repaint();
     }
@@ -75,29 +66,23 @@ public class MeadowPanel extends WorldPanel {
         panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
         panel.setOpaque(false);
 
-        // Title label - centered
         JLabel titleLabel = new JLabel(labelText);
         titleLabel.setHorizontalAlignment(JLabel.CENTER);
         titleLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
 
-        // Value label - centered below title
         JLabel valueLabel = new JLabel(String.valueOf(initial));
         valueLabel.setHorizontalAlignment(JLabel.CENTER);
         valueLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
         valueLabel.setFont(new Font("SansSerif", Font.BOLD, 14));
 
-        // Add title and value to panel
         panel.add(titleLabel);
         panel.add(valueLabel);
         panel.add(Box.createVerticalStrut(5));
 
-        // Create slider with custom labels
         JSlider slider = new JSlider(JSlider.HORIZONTAL, min, max, initial);
-
-        // Only paint a few primary labels to avoid overlap
         Hashtable<Integer, JLabel> labelTable = new Hashtable<>();
 
-        // For population size and recovery time, use fewer labels
+        // AX: fewer labels
         if (max > 100) {
             int step = (max == 200) ? 20 : 50;
             for (int i = min; i <= max; i += step) {
@@ -116,35 +101,27 @@ public class MeadowPanel extends WorldPanel {
         slider.setMajorTickSpacing(majorTick);
         slider.setMinorTickSpacing(majorTick/2);
 
-        // Add extra height for the slider to accommodate labels
+        // extra height for slider:
         slider.setPreferredSize(new Dimension(slider.getPreferredSize().width, 50));
 
-        // Store slider and value label references for later use
-        if (labelText.contains("Initial % Infected")) {
+        if (labelText.contains(labels[0])) { // Greed variable
             greedinessSlider = slider;
-            initialInfectedValue = valueLabel;
-            slider.addChangeListener(e -> updateInitialInfected());
+            greedinessLabel = valueLabel;
+            slider.addChangeListener(e -> updateGreediness());
         }
-
-
-
-        else if (labelText.contains("Infection Probability")) {
-            infectionProbabilitySlider = slider;
-            infectionProbabilityValue = valueLabel;
-            slider.addChangeListener(e -> updateInfectionProbability());
-        } else if (labelText.contains("Population Size")) {
-            populationSizeSlider = slider;
-            populationSizeValue = valueLabel;
-            slider.addChangeListener(e -> updatePopulationSize());
-        } else if (labelText.contains("Fatality/Recovery")) {
-            recoveryTimeSlider = slider;
-            recoveryTimeValue = valueLabel;
-            slider.addChangeListener(e -> updateRecoveryTime());
+        else if (labelText.contains(labels[1])) {
+            growBackRateSlider = slider;
+            growBackRateLabel = valueLabel;
+            slider.addChangeListener(e -> updateGrowBackRate());
+        }
+        else if (labelText.contains(labels[2])) {
+            moveEnergySlider = slider;
+            moveEnergyLabel = valueLabel;
+            slider.addChangeListener(e -> updateMoveEnergy());
         }
 
         // Add slider to panel
         panel.add(slider);
-
         return panel;
     }
 
@@ -157,46 +134,33 @@ public class MeadowPanel extends WorldPanel {
     }
 
     // adjust  upadte sliders
-    private void updateInitialInfected() {
+    private void updateGreediness() {
         int value = greedinessSlider.getValue();
-        initialInfectedValue.setText(String.valueOf(value));
+        greedinessLabel.setText(String.valueOf(value));
         if (meadow != null) {
             meadow.setGreediness(value);
         }
     }
 
-    private void updateInfectionProbability() {
-        int value = infectionProbabilitySlider.getValue();
-        infectionProbabilityValue.setText(String.valueOf(value));
-//        Meadow.VIRULENCE = value;
-    }
-
-    private void updatePopulationSize() {
-        int value = populationSizeSlider.getValue();
-        populationSizeValue.setText(String.valueOf(value));
+    private void updateGrowBackRate() {
+        int value = growBackRateSlider.getValue();
+        growBackRateLabel.setText(String.valueOf(value));
         if (meadow != null) {
-//            meadow.setPopulationSize(value);
+            meadow.setGrowBackRate(value);
         }
     }
 
-    private void updateRecoveryTime() {
-        int value = recoveryTimeSlider.getValue();
-        recoveryTimeValue.setText(String.valueOf(value));
+    private void updateMoveEnergy() {
+        int value = moveEnergySlider.getValue();
+        moveEnergyLabel.setText(String.valueOf(value));
         if (meadow != null) {
-//            meadow.setRecoveryTime(value);
-        }
-    }
-    private void toggleFatality() {
-        if (meadow != null) {
-//            boolean isFatal = meadow.toggleFatality();
-//            fatalityButton.setText(isFatal ? "Fatal" : "Not Fatal");
+            meadow.setMoveEnergy(value);
         }
     }
 
     // main
     public static void main(String[] args) {
-        GreedFactory factory = new GreedFactory();
-        MeadowPanel panel = new MeadowPanel(factory);
+        MeadowPanel panel = new MeadowPanel(new GreedFactory());
         panel.display();
     }
 }

@@ -43,10 +43,10 @@ public class Cow extends MobileAgent {
 
 
     public void setEnergy(int newEnergy) {
-        if (this.energy > 100) {
+        if (newEnergy > 100) {
             this.energy = 100;
         }
-        else if (this.energy < 0) {
+        else if (newEnergy < 0) {
             this.energy = 0;
         }
         else this.energy = newEnergy;
@@ -63,7 +63,7 @@ public class Cow extends MobileAgent {
         if (energy >= moveCost) {
             moveToAnotherPatch(((Meadow) world).getPatchSize());
             setEnergy(energy - moveCost);
-        } else {
+        } else {//  if cow doesn't move, it still have access to the same patch
             waitForGrass(); // cow doesn't have energy to move
         }
     }

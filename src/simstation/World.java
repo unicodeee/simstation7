@@ -34,7 +34,9 @@ public class World extends Model {
 //        clock = 0;
 //        alive = agents.size();
         // Add a stats updater agent if not already added
+        stopAgents();
         agents.clear();
+
         if (!statsUpdaterAdded) {
             addAgent(new ObserverAgent(this));
             statsUpdaterAdded = true;

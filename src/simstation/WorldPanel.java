@@ -63,13 +63,18 @@ public class WorldPanel extends AppPanel {
     }
 
     public void setModel(Model m) {
-        super.setModel(m);
         World w = (World)m;
+        super.setModel(w);
         Iterator<Agent> it = w.iterator();
+
+
+        Thread t = new Thread(it.next());
+        t.start();
         while(it.hasNext()) {
-            Thread t = new Thread(it.next());
+            t = new Thread(it.next());
             t.start();
         }
+        w.changed();
     }
 
     public static void main(String[] args) {
@@ -77,7 +82,5 @@ public class WorldPanel extends AppPanel {
         WorldPanel panel = new WorldPanel(factory);
         panel.display();
     }
-
-
 }
 

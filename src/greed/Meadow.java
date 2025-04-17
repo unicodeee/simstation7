@@ -1,18 +1,17 @@
 package greed;
 
-import mvc.AppPanel;
 import simstation.Agent;
 import simstation.World;
-import simstation.WorldPanel;
 
 public class Meadow extends World {
 
     int waitPenalty = 5;
     int moveEnergy = 5;
     int numCows = 50;
+    int growBackRate = 1;
 
     int greediness = 25;
-    int patchSize = 25;
+    int patchSize = 20;
     int dim = SIZE / patchSize; // dim is how patch many per row
 
     public Patch getPatchAt(int cowX, int cowY) {
@@ -64,9 +63,15 @@ public class Meadow extends World {
         return greediness;
     }
 
-    public static void main(String[] args) {
-        AppPanel panel = new WorldPanel(new GreedFactory());
+    public void setGrowBackRate(int value) {
+        this.growBackRate = value;
+    }
 
-        panel.display();
+    public void setMoveEnergy(int moveEnergy) {
+        this.moveEnergy = moveEnergy;
+    }
+
+    public int getGrowBackRate() {
+        return growBackRate;
     }
 }

@@ -2,8 +2,6 @@ package greed;
 
 
 import simstation.Agent;
-import simstation.ObserverAgent;
-import simstation.World;
 import simstation.WorldView;
 
 import java.awt.*;
