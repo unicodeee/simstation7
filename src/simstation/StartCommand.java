@@ -10,7 +10,9 @@ public class StartCommand extends Command {
 
     @Override
     public void execute() {
+        System.out.println("StartCommand executing...");
         simstation.World world = (World) model;
         world.startAgents();
     }
+
 }

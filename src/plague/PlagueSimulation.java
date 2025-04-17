@@ -1,11 +1,6 @@
 package plague;
-import mvc.*;
 import simstation.*;
-
-import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
-import java.util.Random;
 
 public class PlagueSimulation extends World {
 
@@ -25,22 +20,11 @@ public class PlagueSimulation extends World {
 
 
     public void populate() {
-
         for(int i = 0; i < POPULATION_SIZE; i++)
             addAgent(new Host());
 
         List<Agent> agents = getAgents();
-        for(int i = 0; i < INITIAL_INFECTED; i++) {
-            /*int temp = new Random().nextInt(agents.size());
-           if(!(agents.get(temp) instanceof ObserverAgent)) {
-               if (!((Host) agents.get(temp)).isInfected()) {
-                   ((Host) agents.get(temp)).setInfected(true);
-                   ((Host) agents.get(temp)).startInfectionTime();
-                   //System.out.println("time started");
-               }
-               else
-                   i--;
-           } */
+        for(int i = 0; i < (INITIAL_INFECTED*POPULATION_SIZE)/100; i++) {
             if(!((agents.get(i)) instanceof ObserverAgent)) {
                 ((Host)agents.get(i)).setInfected(true);
             }
@@ -53,22 +37,9 @@ public class PlagueSimulation extends World {
         this.fatal = isFatal;
     }
 
-   /* @Override
-    public String getStatus() {
-        // Calculate current infection percentage
-        int total = 0;
-        int infected = 0;
-
-        Iterator<Agent> it = iterator();
-        while (it.hasNext()) {
-            Agent agent = it.next();
-            if (agent instanceof Plague) {
-                total++;
-                if (((Plague) agent).isInfected()) {
-                    infected++;
-                }
-            }
-        }
-*/
+    public static void main(String[] args) {
+        PlaguePanel panel = new PlaguePanel(new PlagueFactory());
+        panel.display();
+    }
 
 }

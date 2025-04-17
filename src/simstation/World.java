@@ -30,20 +30,25 @@ public class World extends Model {
     }
 
     public synchronized void startAgents() {
-        // Reset clock and stats when starting
-//        clock = 0;
-//        alive = agents.size();
-        // Add a stats updater agent if not already added
+        clock = 0;
+        alive = agents.size();
+
         if (!statsUpdaterAdded) {
             addAgent(new ObserverAgent(this));
             statsUpdaterAdded = true;
         }
+
+        agents.clear();
+        statsUpdaterAdded = false;  // reset the flag if needed
+
         populate();
+
         for (simstation.Agent a : agents) {
             a.start();
         }
         changed();
     }
+
 
     public synchronized void stopAgents() {
         for (simstation.Agent a : agents) {

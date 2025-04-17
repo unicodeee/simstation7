@@ -42,19 +42,16 @@ public class WorldFactory implements AppFactory {
 
     @Override
     public Command makeEditCommand(Model model, String type, Object source) {
-        if (type == "Start") {
+        System.out.println("makeEditCommand called with: " + type);
+        if ("Start".equals(type)) {
             return new StartCommand(model);
-        }
-        else if (type == "Pause") {
+        } else if ("Pause".equals(type)) {
             return new SuspendCommand(model);
-        }
-        else if (type == "Resume") {
+        } else if ("Resume".equals(type)) {
             return new ResumeCommand(model);
-        }
-        else if (type == "Stop") {
+        } else if ("Stop".equals(type)) {
             return new StopCommand(model);
-        }
-        else if (type == "Stats") {
+        } else if ("Stats".equals(type)) {
             return new StatsCommand(model);
         }
         return null;

@@ -7,7 +7,6 @@ public class Host extends MobileAgent {
 
     private boolean infected;
     private long timeInfectedStart;
-    //private long timeInfectedStop;
     private boolean alive;
     private boolean timeStarted;
 
@@ -25,21 +24,28 @@ public class Host extends MobileAgent {
     public boolean isInfected() { return infected; }
     public void setAlive(boolean alive) { this.alive = alive; }
     public boolean isAlive() { return alive; }
-    public void setTimeStarted(boolean ts) { timeStarted = ts; }
     public long getTimeInfected() {
-        System.out.println("infected: " + infected);
-        System.out.println("timeInfectedStart: " + timeInfectedStart);
-        System.out.println("current time: " + world.getClock());
         if(infected) return world.getClock() - timeInfectedStart;
         else return 0;
-        //else return timeInfectedStop - timeInfectedStart;
     }
 
     public void startInfectionTime() {
-        timeInfectedStart = world.getClock();
-        System.out.println("time started");
+        if (!timeStarted && world.getClock() > 0) {
+            timeInfectedStart = world.getClock();
+            timeStarted = true;
+            System.out.println("infection timer started at: " + timeInfectedStart);
+        }
     }
-    //public void stopInfectionTime() { timeInfectedStop = System.currentTimeMillis() / 1000; }
+
+
+    public void tryToInfect() {
+        if (!infected && Math.random() * 100 < PlagueSimulation.VIRULENCE) {
+            if (Math.random() * 100 >= PlagueSimulation.RESISTANCE) {
+                infected = true;
+                startInfectionTime();
+            }
+        }
+    }
 
 
     @Override

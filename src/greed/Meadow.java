@@ -1,17 +1,34 @@
 package greed;
 
-import mvc.AppPanel;
+import simstation.Agent;
+import simstation.ObserverAgent;
 import simstation.World;
-import simstation.WorldPanel;
 
 public class Meadow extends World {
 
     int waitPenalty = 5;
-    int moveEnergy = 10;
+    int moveEnergy = 5;
     int numCows = 50;
-    int patchSize = 25;
+    int growBackRate = 1;
+
+    int greediness = 25;
+    int patchSize = 20;
     int dim = SIZE / patchSize; // dim is how patch many per row
 
+    public Patch getPatchAt(int cowX, int cowY) {
+        for (Agent patch : getAgents()) {
+            if (patch instanceof Patch
+                    && patch.getXc() / patchSize == cowX / patchSize
+                    && patch.getYc() / patchSize == cowY / patchSize) {
+                return (Patch) patch;
+            }
+        }
+        return null;
+    }
+
+    public int getMoveEnergy() {
+        return moveEnergy;
+    }
 
     public int getPatchSize() {
         return patchSize;
@@ -30,7 +47,7 @@ public class Meadow extends World {
         }
 
         // add cows
-        for(int i = 0; i < 50; i++){
+        for(int i = 0; i < numCows; i++){
                 addAgent(new Cow());
         }
     }
@@ -39,9 +56,46 @@ public class Meadow extends World {
         return dim;
     }
 
-    public static void main(String[] args) {
-        AppPanel panel = new WorldPanel(new GreedFactory());
+    public void setGreediness(int greediness) {
+        this.greediness = greediness;
+    }
 
-        panel.display();
+    public int getGreediness() {
+        return greediness;
+    }
+
+    public void setGrowBackRate(int value) {
+        this.growBackRate = value;
+    }
+
+    public void setMoveEnergy(int moveEnergy) {
+        this.moveEnergy = moveEnergy;
+    }
+
+    public int getGrowBackRate() {
+        return growBackRate;
+    }
+
+    @Override
+    public String getStatus() {
+        int agentCount = 0;
+        int cowsAliveCount = 0;
+        int patchesCount = 0;
+        for (Agent a : getAgents()) {
+            if (!(a instanceof ObserverAgent)) {
+
+                if (a instanceof Cow) {
+                    if (!((Cow)a).died) cowsAliveCount++;
+                }
+                if (a instanceof Patch) {
+                    patchesCount++;
+                }
+                agentCount++;
+            }
+        }
+        return "#agents: " + agentCount + "\n"+
+                "#patches: " + patchesCount + "\n"+
+                "#living_cows: " + cowsAliveCount + "\n" +
+                "#clock: " +  this.getClock();
     }
 }

@@ -1,15 +1,10 @@
 package greed;
 
-import mvc.Utilities;
 import simstation.Agent;
 
 public class Patch extends Agent {
 
-    static public int patchSize  = 50; // TO DO: change back to 10 later
-    public int energy = 5;
-    public int growBackRate = 1;
-
-//    final Point position;
+    public int energy = 100;
 
     public Patch() {
         super();
@@ -17,17 +12,28 @@ public class Patch extends Agent {
 
 
     public void setEnergy(int newEnergy) {
-        if (0 <= newEnergy && newEnergy <= 100) {
-            this.energy = newEnergy; // because  0 < energy < 100 required
+        if (newEnergy > 100) {
+            this.energy = 100;
+        }
+        else if (newEnergy < 0) {
+            this.energy = 0;
+        }
+        else this.energy = newEnergy;
+    }
+
+    public synchronized void eatMe(Cow cow, int amt) {
+        // Only one cow at a time can execute this code per patch
+        if (amt <= energy) {
+            this.setEnergy(energy - amt);
+            cow.setEnergy(cow.energy + amt);
+        } else {
+            cow.moveEnergy(); // Not enough grass, move
         }
     }
 
-    public void eatMe(Cow cow, int amt) {  // amt = amount
-        // TO DO
-    }
 
     @Override
     public void update() {
-//        this.setEnergy(energy + growBackRate);
+        this.setEnergy(energy + ((Meadow)world).getGrowBackRate());
     }
 }
