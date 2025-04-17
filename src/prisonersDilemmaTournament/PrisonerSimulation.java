@@ -1,11 +1,11 @@
-package simstation.prisonersDilemmaTournament;
+package prisonersDilemmaTournament;
 
 import mvc.*;
 import simstation.*;
-import simstation.prisonersDilemmaTournament.Strategies.Cheat;
-import simstation.prisonersDilemmaTournament.Strategies.Cooperate;
-import simstation.prisonersDilemmaTournament.Strategies.RandomlyCooperate;
-import simstation.prisonersDilemmaTournament.Strategies.Tit4Tat;
+import prisonersDilemmaTournament.Strategies.Cheat;
+import prisonersDilemmaTournament.Strategies.Cooperate;
+import prisonersDilemmaTournament.Strategies.RandomlyCooperate;
+import prisonersDilemmaTournament.Strategies.Tit4Tat;
 
 import java.util.List;
 

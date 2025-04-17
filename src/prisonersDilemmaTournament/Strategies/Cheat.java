@@ -1,6 +1,6 @@
-package simstation.prisonersDilemmaTournament.Strategies;
+package prisonersDilemmaTournament.Strategies;
 
-import simstation.prisonersDilemmaTournament.*;
+import prisonersDilemmaTournament.*;
 
 public class Cheat extends Strategy {
 

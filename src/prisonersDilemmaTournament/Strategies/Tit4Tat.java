@@ -1,7 +1,7 @@
-package simstation.prisonersDilemmaTournament.Strategies;
+package prisonersDilemmaTournament.Strategies;
 
-import simstation.prisonersDilemmaTournament.Prisoner;
-import simstation.prisonersDilemmaTournament.Strategy;
+import prisonersDilemmaTournament.Prisoner;
+import prisonersDilemmaTournament.Strategy;
 
 public class Tit4Tat extends Strategy {
 

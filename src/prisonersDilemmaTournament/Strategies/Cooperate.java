@@ -1,6 +1,6 @@
-package simstation.prisonersDilemmaTournament.Strategies;
+package prisonersDilemmaTournament.Strategies;
 
-import simstation.prisonersDilemmaTournament.Strategy;
+import prisonersDilemmaTournament.Strategy;
 
 public class Cooperate extends Strategy {
 

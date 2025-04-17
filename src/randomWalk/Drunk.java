@@ -1,4 +1,4 @@
-package simstation.randomWalk;
+package randomWalk;
 
 
 import mvc.*;
@@ -11,7 +11,7 @@ class Drunk extends MobileAgent {
     }
 
     public void update() {
-        heading = Heading.random();
+        Heading heading = Heading.random();
         int steps = Utilities.rng.nextInt(20) + 1;
         move(steps);
     }

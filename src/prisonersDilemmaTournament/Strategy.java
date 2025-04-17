@@ -1,4 +1,4 @@
-package simstation.prisonersDilemmaTournament;
+package prisonersDilemmaTournament;
 
 public abstract class Strategy {
     protected Prisoner myPrisoner;
