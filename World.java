@@ -38,7 +38,8 @@ public class World extends Model {
             statsUpdaterAdded = true;
         }
 
-        agents.clear();
+        if(agents.size() == 1)
+            agents.clear();
 
         populate();
 
