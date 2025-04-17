@@ -30,10 +30,6 @@ public class World extends Model {
     }
 
     public synchronized void startAgents() {
-        // Reset clock and stats when starting
-//        clock = 0;
-//        alive = agents.size();
-        // Add a stats updater agent if not already added
         stopAgents();
         agents.clear();
 
@@ -128,7 +124,6 @@ public class World extends Model {
     public Iterator<Agent> iterator() {
         return agents.iterator();
     }
-
     public int getClock() {
         return clock;
     }

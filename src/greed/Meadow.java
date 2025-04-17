@@ -1,6 +1,7 @@
 package greed;
 
 import simstation.Agent;
+import simstation.ObserverAgent;
 import simstation.World;
 
 public class Meadow extends World {
@@ -73,5 +74,28 @@ public class Meadow extends World {
 
     public int getGrowBackRate() {
         return growBackRate;
+    }
+
+    @Override
+    public String getStatus() {
+        int agentCount = 0;
+        int cowsAliveCount = 0;
+        int patchesCount = 0;
+        for (Agent a : getAgents()) {
+            if (!(a instanceof ObserverAgent)) {
+
+                if (a instanceof Cow) {
+                    if (!((Cow)a).died) cowsAliveCount++;
+                }
+                if (a instanceof Patch) {
+                    patchesCount++;
+                }
+                agentCount++;
+            }
+        }
+        return "#agents: " + agentCount + "\n"+
+                "#patches: " + patchesCount + "\n"+
+                "#living_cows: " + cowsAliveCount + "\n" +
+                "#clock: " +  this.getClock();
     }
 }
