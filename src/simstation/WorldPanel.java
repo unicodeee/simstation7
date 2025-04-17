@@ -1,9 +1,11 @@
 package simstation;
 
-import mvc.*;
+import mvc.AppPanel;
+import mvc.Model;
+
 import javax.swing.*;
 import java.awt.*;
-import java.util.*;
+import java.util.Iterator;
 
 public class WorldPanel extends AppPanel {
 
@@ -57,11 +59,12 @@ public class WorldPanel extends AppPanel {
         p.add(threadPanel);
 
         controlPanel.add(p,  BorderLayout.NORTH);
+        controlPanel.setBackground(Color.PINK);
     }
 
     public void setModel(Model m) {
         super.setModel(m);
-        World w = (World)m;
+        simstation.World w = (World)m;
         Iterator<Agent> it = w.iterator();
         while(it.hasNext()) {
             Thread t = new Thread(it.next());
@@ -69,5 +72,12 @@ public class WorldPanel extends AppPanel {
         }
     }
 
+    public static void main(String[] args) {
+        WorldFactory factory = new WorldFactory();
+        WorldPanel panel = new WorldPanel(factory);
+        panel.display();
+    }
+
 
 }
+

@@ -1,14 +1,11 @@
 package mineField;
 
-import mvc.Model;
-import mvc.Utilities;
 import mvc.View;
 
 import java.awt.*;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 import java.util.List;
-import java.util.Set;
 
 
 public class MineFieldView extends View {

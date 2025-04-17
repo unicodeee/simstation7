@@ -1,123 +1,101 @@
 package simstation;
 
+import mvc.Utilities;
+
 import java.io.Serializable;
 
-public class Agent implements Runnable, Serializable {
+public abstract class Agent implements Runnable, Serializable {
     private int xc;
     private int yc;
     private boolean paused = false;
     private boolean stopped = false;
     private String agentName;
-    private Thread myThread;
+    transient protected Thread myThread;
     protected World world;
-
-    public Agent(World world, String name, int x, int y) {
-        this.world = world;
-        this.agentName = name;
-        this.xc = x;
-        this.yc = y;
+    static int AGENT_SIZE = 10;
+    private boolean positionSet = false;
+    public int getAgentSize() {
+        return AGENT_SIZE;
     }
-
-    /**
-     * Starts the agent thread
-     */
-    public void start() {
-        if (myThread == null) {
-            myThread = new Thread(this, agentName);
-            myThread.start();
-        }
+    public boolean isPositionSet() {
+        return positionSet;
     }
-
-    /**
-     * Stops the agent thread
-     */
-    public void stop() {
-        stopped = true;
-        if (myThread != null) {
-            myThread.interrupt();
-        }
-    }
-
-    /**
-     * Pauses the agent
-     */
-    public void pause() {
-        paused = true;
-    }
-
-    /**
-     * Resumes the agent if paused
-     */
-    public void resume() {
-        paused = false;
-        synchronized (this) {
-            this.notify();
-        }
-    }
-
-    /**
-     * Updates the agent's state
-     */
-    protected void update() {
-        // Default implementation does nothing
-        // Subclasses should override this
-    }
-
-    /**
-     * The agent's run method
-     */
-    @Override
-    public void run() {
-        while (!stopped) {
-            // Check if paused
-            synchronized (this) {
-                while (paused) {
-                    try {
-                        wait();
-                    } catch (InterruptedException e) {
-                        if (stopped) return;
-                    }
-                }
-            }
-
-            // Perform the agent's update
-            update();
-
-            // Sleep for a bit
-            try {
-                Thread.sleep(100);
-            } catch (InterruptedException e) {
-                if (stopped) return;
-            }
-        }
-    }
-
-    // Getters and setters
     public int getXc() {
         return xc;
-    }
-
-    public void setXc(int xc) {
-        this.xc = xc;
     }
 
     public int getYc() {
         return yc;
     }
 
+    public void setXc(int xc) {
+        this.xc = xc;
+        this.positionSet = true;
+    }
+
     public void setYc(int yc) {
         this.yc = yc;
+        this.positionSet = true;
     }
 
-    public boolean isPaused() {
-        return paused;
+    public void start() {
+        myThread = new Thread(this);
+        myThread.start();
     }
 
-    public boolean isStopped() {
+    public void stop() {
+        stopped = true;
+    }
+
+    public void pause() {
+        paused = true;
+    }
+
+    public synchronized void resume() {
+        paused = false;
+        notify();
+    }
+
+    public abstract void update();
+
+    // in progress
+    @Override
+    public void run() {
+        myThread = Thread.currentThread();
+        onStart();
+        while (!isStopped()) {
+            try {
+                update();
+                Thread.sleep(20); // TO DO: 20 original
+                checkPaused();
+            } catch(InterruptedException e) {
+                onInterrupted();
+            }
+        }
+        onExit();
+    }
+
+    protected synchronized void onExit() {
+    }
+
+    protected synchronized void onStart() {
+    }
+
+    protected synchronized void onInterrupted() {
+    }
+
+    private boolean isStopped() {
         return stopped;
     }
 
-    public String getAgentName() {
-        return agentName;
+    private synchronized void checkPaused() {
+        try {
+            while(!stopped && paused) {
+                wait();
+                paused = false;
+            }
+        } catch (InterruptedException e) {
+            Utilities.error(e.getMessage());
+        }
     }
 }

@@ -1,7 +1,6 @@
 package mineField;
 
 import mvc.Model;
-import mvc.Utilities;
 
 import java.awt.*;
 import java.util.ArrayList;

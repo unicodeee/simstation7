@@ -8,36 +8,55 @@ import mvc.View;
 public class WorldFactory implements AppFactory {
     @Override
     public String getTitle() {
-        return "";
+        return "Sim Station";
     }
 
     @Override
     public String[] getEditCommands() {
-        return new String[0];
+        return new String[] {"Start", "Pause", "Resume", "Stop", "Stats"};
     }
 
     @Override
     public String getHelp() {
-        return "";
+        return "Start to start simulation\n" +
+                "Pause to pause simulation\n" +
+                "Resume to resume simulation\n" +
+                "Stop to stop simulation\n" +
+                "Stats to view statistics of simulation";
     }
 
     @Override
     public String about() {
-        return "";
+        return "Sim Station Group 11: Quy Lu, Isabelle Luu";
     }
 
     @Override
     public Model makeModel() {
-        return null;
+        return new simstation.World();
     }
 
     @Override
     public View makeView(Model m) {
-        return null;
+        return new WorldView((World) m);
     }
 
     @Override
     public Command makeEditCommand(Model model, String type, Object source) {
+        if (type == "Start") {
+            return new StartCommand(model);
+        }
+        else if (type == "Pause") {
+            return new SuspendCommand(model);
+        }
+        else if (type == "Resume") {
+            return new ResumeCommand(model);
+        }
+        else if (type == "Stop") {
+            return new StopCommand(model);
+        }
+        else if (type == "Stats") {
+            return new StatsCommand(model);
+        }
         return null;
     }
 }

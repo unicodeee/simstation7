@@ -4,10 +4,13 @@ import mvc.Command;
 import mvc.Model;
 
 public class SuspendCommand extends Command {
-    public SuspendCommand(Model model, Heading heading) {
+    public SuspendCommand(Model model) {
         super(model);
     }
 
+    @Override
     public void execute() {
+        simstation.World world = (World) model;
+        world.pauseAgents();
     }
 }

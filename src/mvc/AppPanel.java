@@ -1,20 +1,21 @@
 package mvc;
 
-import java.awt.*;
-import java.awt.event.*;
 import javax.swing.*;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 // AppPanel is the MVC controller
 public class AppPanel extends JPanel implements Subscriber, ActionListener  {
 
-    protected Model model;
+    protected mvc.Model model;
     protected AppFactory factory;
     protected View view;
     protected JPanel controlPanel;
-    protected Command edit;
+    protected mvc.Command edit;
     private JFrame frame;
-    public static int FRAME_WIDTH = 500;
-    public static int FRAME_HEIGHT = 300;
+    public static int FRAME_WIDTH = 1100;
+    public static int FRAME_HEIGHT = 600;
 
     public AppPanel(AppFactory factory) {
 
@@ -34,14 +35,19 @@ public class AppPanel extends JPanel implements Subscriber, ActionListener  {
         frame.setSize(FRAME_WIDTH, FRAME_HEIGHT);
     }
 
+    public AppPanel(AppFactory factory, int width, int height) {
+      this(factory);
+      frame.setSize(width, height);
+  }
+
     public void display() { frame.setVisible(true); }
 
     public void update() {  /* override in extensions if needed */ }
 
-    public Model getModel() { return model; }
+    public mvc.Model getModel() { return model; }
 
     // called by file/open and file/new
-    public void setModel(Model newModel) {
+    public void setModel(mvc.Model newModel) {
         this.model.unsubscribe(this);
         this.model = newModel;
         this.model.subscribe(this);
